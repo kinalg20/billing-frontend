@@ -1,0 +1,123 @@
+<!-- Breadcrumb Area -->
+<div style="display: flex; justify-content: space-between;">
+    <h3>{{breadcrumb[0].title}}</h3>
+</div>
+
+<div class="bill-list" *ngIf="totalRows">
+    <p-table #dt1 [value]="totalRows" dataKey="id" [tableStyle]="{'min-width': '60rem'}" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['shop_name']">
+        <ng-template pTemplate="caption">
+            <div class="d-flex align-items-center justify-content-between w-100">
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" [(ngModel)]="filterval" (input)="filterTable($event)"
+                        placeholder="Search keyword" />
+                </span>
+                <button class="btn btn-primary border-0 outline-0 rounded" routerLink="/bill-master">Add</button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 2rem"></th>
+                <th>S.No.</th>
+                <th style="min-width: 30px;">Bill No</th>
+                <th>Bill Date</th>
+                <th>Customer Name</th>
+                <th>Father Name</th>
+                <th>Mobile No.</th>
+                <th>Shop Name</th>
+                <th>City</th>
+                <th>Aadhar</th>
+                <th>PAN</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-expanded="expanded" let-ri="rowIndex">
+            <tr>
+                <td>
+                    <button type="button" pButton pRipple [pRowToggler]="product"
+                        class="p-button-text p-button-rounded p-button-plain"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+                <td>{{ri + 1}}</td>
+                <td>{{product.bill_no}}</td>
+                <td style="min-width: 150px;">{{product.bill_date | date}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.father_name}}</td>
+                <td>{{product.mobile}}</td>
+                <td>{{product.shop_name}}</td>
+                <td>{{product.city}}</td>
+                <td>{{product.aadhar ? product.aadhar : '-'}}</td>
+                <td>{{product.pan ? product.pan : '-'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-product>
+            <tr class="row-tr">
+                <td colspan="7">
+                    <div>
+                        <p-table [value]="product.bill_items" dataKey="id">
+                            <ng-template pTemplate="header">
+                                <tr class="rowExpand">
+                                    <th style="width: 5rem"></th>
+                                    <th>S.No.</th>
+                                    <th>Product Name</th>
+                                    <th>Gross Wt</th>
+                                    <th>Melting</th>
+                                    <th>Wastage</th>
+                                    <th>Small Pack Wt</th>
+                                    <th>Small Pack Qty</th>
+                                    <th>Big Pack Wt</th>
+                                    <th>Big Pack Qty</th>
+                                    <th>Box Wt</th>
+                                    <th>Box Qty</th>
+                                    <th>Labour</th>
+                                    <!-- <th>Labour By</th> -->
+                                    <th>Total Labour</th>
+                                    <th>Piece Qty</th>
+                                    <th>Gold Rate</th>
+                                    <!-- <th>Net Wt</th> -->
+                                    <th>Rate</th>
+                                    <th>Fine</th>
+                                </tr>   
+                            </ng-template>
+                            <ng-template pTemplate="body" let-items  let-ri="rowIndex">
+                                <tr class="rowExpand">
+                                    <td></td>
+                                    <td>{{ri + 1}}</td>
+                                    <td>
+                                        <ng-container *ngFor="let productname of productList;">
+                                            <span *ngIf="productname.id == items.product_id">{{productname.name}}</span>
+                                        </ng-container>
+                                    </td>
+                                    <td>{{items.gross_weight ? items.gross_weight : 0}}</td>
+                                    <td>{{items.melting ? items.melting : 0}}</td>
+                                    <td>{{items.wastage ? items.wastage : 0}}</td>
+                                    <td>{{items.small_pack_weight ? items.small_pack_weight : 0}}</td>
+                                    <td>{{items.small_pack_quantity ? items.small_pack_quantity : 0}}</td>
+                                    <td>{{items.big_pack_weight ? items.big_pack_weight : 0}}</td>
+                                    <td>{{items.big_pack_quantity ? items.big_pack_quantity : 0}}</td>
+                                    <td>{{items.box_weight ? items.box_weight : 0}}</td>
+                                    <td>{{items.box_quantity ? items.box_quantity : 0}}</td>
+                                    <td>{{items.labour}}</td>
+                                    <!-- <td>{{items.labour_by}}</td> -->
+                                    <td>{{items.piece_quantity ? items.piece_quantity : 0}}</td>
+                                    <td>{{items.total_labour}}</td>
+                                    <td>{{items.gold_rate}}</td>
+                                    <!-- <td>{{items.net_weight}}</td> -->
+                                    <td>{{items.rate}}</td>
+                                    <td>{{items.fine}}</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">There are no product yet.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
