@@ -1,74 +1,3 @@
-.add-listings-box1 {
-    margin-bottom: 30px;
-    background-color: var(--whiteColor);
-    box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-    border-radius: 5px;
-    padding: 10px 25px 10px 25px;
-
-    h3 {
-        padding: 10px 25px 10px;
-        border-bottom: 1px dashed #eeeeee;
-
-        font: {
-            size: 17px;
-            weight: 600;
-        }
-
-        margin: {
-            bottom: 25px;
-            left: -25px;
-            right: -25px;
-        }
-
-        ;
-    }
-
-    form {
-        .form-group {
-            margin: 10px 0;
-
-            .form-control {
-                border: 1px solid #d5d5d5 !important;
-                border-radius: 5px;
-                background-color: #f9f9f9 !important;
-                padding-top: 6px;
-            }
-        }
-
-        input,
-        select {
-            height: 35px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--blackColor);
-            position: relative;
-            padding-left: 2px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .radio-buttons {
-            display: flex;
-            justify-content: space-between;
-            width: 100px;
-
-            .radio-button {
-                display: flex;
-                align-items: center;
-                margin: 5px 0 0;
-
-                input {
-                    margin-bottom: 0;
-                }
-            }
-        }
-
-    }
-}
-
 .add-listings-btn {
 
     button {
@@ -168,101 +97,85 @@
 }
 
 
-/* Min width 576px to Max width 767px */
-@media (max-width: 767px) {
-    .add-listings-box {
-        button {
-            margin-top: 0;
-        }
-    }
-
-    .form-group {
-        label {
-            margin-bottom: 3px !important;
-        }
-    }
-}
-
-/* Min width 768px to Max width 991px */
-@media (min-width: 768px) and (max-width: 991px) {
-
-    .add-listings-box {
-        button {
-            margin-top: 0;
-        }
-    }
-}
-
 ::ng-deep {
 
     .p-column-filter-row .p-column-filter-menu-button,
     .p-column-filter-row .p-column-filter-clear-button {
         display: none !important;
     }
-
-    p-calendar .p-inputtext {
-        border: 1px solid #d5d5d5 !important;
-        border-radius: 5px;
-        background-color: #f9f9f9 !important;
-        padding-top: 6px;
-    }
-
-    .p-multiselect {
-        height: 33px !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #d5d5d5 !important;
-        border-radius: 5px;
-        background-color: #f9f9f9 !important;
-
-        .p-multiselect-label.p-placeholder {
-            font-size: 14px;
-        }
-
-        .p-multiselect-label {
-            height: 100% !important;
-        }
-    }
-
-    .p-multiselect .p-multiselect-label.p-placeholder {
-        display: flex;
-        align-items: center;
-        font-size: 13px;
-    }
-
-    .p-multiselect .p-multiselect-label,
-    .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-    }
-
-    .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight,
-    .p-multiselect-item:focus {
-        background: var(--whiteColor);
-        color: var(--mainColor);
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
-
-    .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
 }
 
 
-table th {
+.purchasingForm table th {
+    padding: 10px 5px;
     white-space: nowrap;
 }
 
+.purchasingForm .body-wrapper {
+    padding: 10px 40px 0 50px !important;
+}
 
-@media(max-width : 768px) {
-    table {
-        display: block;
-        overflow-x: auto;
+.purchasingForm table td {
+    padding: 10px 5px;
+}
+
+
+@media(max-width : 1440px){
+    .purchasingForm table th {
+        padding: 5px;
+        white-space: nowrap;
+    }
+
+    .purchasingForm table td {
+        padding: 5px;
+    }
+}
+
+::ng-deep {
+    .purchasingForm .p-dropdown {
+        // height: 35px;
+        padding: 2px;
+        border-bottom: 1px solid #dedede;
+        padding: 0;
+        font-size: 13px;
+        border-top: 0;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+
+    .pi-chevron-down:before {
+        font-size: 12px;
+    }
+
+    .purchasingForm .p-dropdown .p-dropdown-trigger {
+        width: 1.2rem !important;
+    }
+
+    .purchasingForm .p-dropdown .p-dropdown-label {
+        padding: 0;
+    }
+
+    // .purchasingForm table td{
+    //     padding: 5px 8px 0 8px!important;
+    // }
+
+    .purchasingForm td input,
+    .purchasingForm td select {
+        border-bottom: 1px solid #dedede;
+        padding: 0;
+        font-size: 13px;
+        border-top: 0;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+
+    .main-fields .p-inputtext{
+        height: 10px;
+    }
+
+    .labour-select{
+        width: 100px;
     }
 }

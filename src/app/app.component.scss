@@ -119,3 +119,9 @@
       transform: rotate(360deg);
     }
   }
+
+
+
+  ::ng-deep .body-wrapper{
+    padding: 10px 50px 0 50px!important;
+  }

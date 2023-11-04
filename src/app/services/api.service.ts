@@ -52,9 +52,17 @@ export class ApiService {
   getPurchasingFormData(){
     return this.http.get(this._baseUrl + 'purchasing').toPromise();
   }
-
+  
   getDataByCustomerNameProductId(object:any){
     return this.http.get(this._baseUrl + `customers/${object.bill_no}/${object.product_id}`).toPromise();
+  }
+  
+  getUserProfile(id:any){
+    return this.http.get(this._baseUrl + `users/${id}`).toPromise();
+  }
+  
+  getShopName(){
+    return this.http.get(this._baseUrl + `/shop-name`).toPromise();
   }
 
 }

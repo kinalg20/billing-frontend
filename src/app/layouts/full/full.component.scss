@@ -15,3 +15,10 @@
   top: 0;
   z-index: 1;
 }
+
+::ng-deep {
+  .sidebar-button .p-button , .p-button:enabled:hover{
+    background: #fb9678;
+    border-color: #fb9678;
+  }
+}

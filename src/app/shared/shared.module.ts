@@ -7,7 +7,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { TableModule } from 'primeng/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
 
 const exportsharedata: any = [
   ReactiveFormsModule,
@@ -15,7 +16,9 @@ const exportsharedata: any = [
   MatDatepickerModule,
   ToastModule,
   KeyFilterModule,
-  InputTextModule
+  InputTextModule,
+  SidebarModule,
+  ButtonModule
 ]
 
 @NgModule({

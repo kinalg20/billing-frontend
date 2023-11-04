@@ -3,13 +3,13 @@
     <h3>{{breadcrumb[0].title}}</h3>
 </div>
 
-<div class="card" *ngIf="totalRows">
+<div class="card purchasing-list" *ngIf="totalRows">
     <p-table #dt1 class="table-container" [value]="totalRows" dataKey="id"
         [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['shop_name']">
+        [globalFilterFields]="['shop_name','product_id']">
         <ng-template pTemplate="caption">
-            <div class="d-flex align-items-center justify-content-between w-100">
+            <div class="search-bar d-flex align-items-center justify-content-between w-100">
                 <span class="p-input-icon-left ml-auto">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" [(ngModel)]="filterval" (input)="filterTable($event)" placeholder="Search keyword" />
@@ -45,7 +45,7 @@
         <ng-template pTemplate="body" let-product let-ri="rowIndex">
             <tr>
                 <td>{{ri + 1}}</td>
-                <td>{{product.shop_name}}</td>
+                <td style="min-width: 150px;">{{product.shop_name}}</td>
                 <td>
                     <ng-container *ngFor="let productname of productList;">
                         <span *ngIf="productname.id == product.product_id">{{productname.name}}</span>

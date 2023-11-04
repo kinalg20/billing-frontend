@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { ApiService } from 'src/app/services/api.service';
 
 interface sidebarMenu {
   link: string;
@@ -17,16 +18,21 @@ interface sidebarMenu {
 export class FullComponent {
 
   search: boolean = false;
-
+  sidebarVisible2: boolean = false;
+    
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver , private apiService : ApiService) { }
 
-  routerActive: string = "activelink";
+  ngOnInit(){
+    this.getProfileData();
+  }
+
+  routerActive: string = "activelink"; 
 
   sidebarMenu: sidebarMenu[] = [
     {
@@ -37,7 +43,7 @@ export class FullComponent {
     {
       link: "/item-list",
       icon: "disc",
-      menu: "Item List",
+      menu: "Stock",
     },
     {
       link: "/bill-listing",
@@ -49,16 +55,16 @@ export class FullComponent {
       icon: "disc",
       menu: "Purchase List",
     },
-    {
-      link: "/forms",
-      icon: "layout",
-      menu: "Forms",
-    },
-    {
-      link: "/alerts",
-      icon: "info",
-      menu: "Alerts",
-    },
+    // {
+    //   link: "/forms",
+    //   icon: "layout",
+    //   menu: "Forms",
+    // },
+    // {
+    //   link: "/alerts",
+    //   icon: "info",
+    //   menu: "Alerts",
+    // },
     // {
     //   link: "/grid-list",
     //   icon: "file-text",
@@ -119,11 +125,24 @@ export class FullComponent {
     //   icon: "sliders",
     //   menu: "Slider",
     // },
-    // {
-    //   link: "/slide-toggle",
-    //   icon: "layers",
-    //   menu: "Slide Toggle",
-    // },
+    {
+      link: "/login",
+      icon: "layers",
+      menu: "Logout",
+    },
   ]
+
+  profile_data : any;
+  user_id : any = {};
+  getProfileData(){
+    this.user_id = localStorage.getItem('billing_token')
+    console.log(JSON.parse(this.user_id));
+    this.apiService.getUserProfile(JSON.parse(this.user_id)['userId']).then((res:any)=>{
+      console.log(res);
+      this.profile_data = res['data'];
+    }).catch((err)=>{
+      this.profile_data = {};
+    })
+  }
 
 }

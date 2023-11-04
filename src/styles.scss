@@ -1,44 +1,54 @@
-:root{
-    --mainColor : #03c9d7;
-    --whiteColor : #fff
+:root {
+  --mainColor: #03c9d7;
+  --whiteColor: #fff
 }
 
 .breadcrumb-area h1 {
-    font-size: 25px !important;
+  font-size: 25px !important;
 }
 
 ::-webkit-scrollbar {
-    width: 3px;
-    height: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
+  width: 3px;
+  height: 5px;
+}
 
-  .table th{
-    padding: 8px;
-  }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
-  .table td{
-    min-height: 20px;
-    padding: 5px 8px 0;
-  }
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
 
-  .form-group{
-    margin: 5px 0!important;
-  }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.table th {
+  padding: 8px;
+}
+
+.table td {
+  min-height: 20px;
+  padding: 5px 8px 0;
+}
+
+.form-group {
+  margin: 5px 0 !important;
+}
+
+.heading-css {
+  margin-top: 40px!important;
+  margin-bottom: 20px!important;
+}
+
+.purchasing-list .search-bar .p-inputtext {
+  padding: 0.45rem 2.3rem!important;
+}
+
 @import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css"; 
+@import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";

@@ -19,6 +19,8 @@ import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
+import { SidebarModule } from 'primeng/sidebar';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { CalendarModule } from 'primeng/calendar';
     MessagesModule,
     ToastModule,
     ReactiveFormsModule,
+    SharedModule
   ],
   providers: [MessageService , { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },],
   bootstrap: [AppComponent]

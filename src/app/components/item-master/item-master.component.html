@@ -2,16 +2,19 @@
 <div class="main-content d-flex flex-column">
 
     <!-- Breadcrumb Area -->
-    <div class="breadcrumb-area" *ngFor="let Content of breadcrumb;">
-        <h3>{{Content.title}}</h3>
+    <div class="breadcrumb-area d-flex justify-content-between align-items-center" *ngFor="let Content of breadcrumb;">
+        <div>
+            <h3 class="my-0">{{Content.title}}</h3>
+        </div>
+        <button (click)="showAddForm = !showAddForm" style="color: #ffff;">Add</button>
     </div>
     <!-- End Breadcrumb Area -->
 
     <!-- Start -->
     <div class="add-listings-box1">
         <form [formGroup]="itemMaster" (ngSubmit)="itemMasterSubmit(formRef)" #formRef="ngForm">
-            <div class="row mt-2">
-                <div class="col-lg-2 col-md-12 form-group">
+            <div class="row m-0" *ngIf="showAddForm">
+                <div class="col-lg-2 col-md-12 form-group p-0">
                     <label for="">Product</label>
                     <input type="text" class="form-control" formControlName="name" placeholder="Product Name"
                         [class.is-invalid]="(formRef.submitted &&
@@ -20,10 +23,10 @@
                         itemMaster.get('name')?.invalid)" >
                     <div class="invalid-feedback"> Product is Required</div>
                 </div>
-                <ng-container *ngIf="submitButton == 'Update'">
+                <!-- <ng-container *ngIf="submitButton == 'Update'"> -->
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Gross Weight</label>
-                        <input type="number" min="1" class="form-control" formControlName="gross_weight"
+                        <input type="number" min="0" class="form-control" formControlName="gross_weight"
                             placeholder="Gross Weight" [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('gross_weight')?.invalid) ||
                             (itemMaster.get('gross_weight')?.touched &&
@@ -54,39 +57,39 @@
                     <ng-container *ngIf="itemMaster.controls['less_weight'].value">
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Small Pack Qty</label>
-                            <input type="number" min="1" class="form-control" formControlName="small_pack_qty"
+                            <input type="number" min="0" class="form-control" formControlName="small_pack_qty"
                                 placeholder="Small Pack Qty">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Small Pack Wt</label>
-                            <input type="number" min="1" class="form-control" formControlName="small_pack_weight"
+                            <input type="number" min="0" class="form-control" formControlName="small_pack_weight"
                                 placeholder="Small Pack Wt">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Big Pack Qty</label>
-                            <input type="number" min="1" class="form-control" formControlName="big_pack_qty"
+                            <input type="number" min="0" class="form-control" formControlName="big_pack_qty"
                                 placeholder="Big Pack Qty">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Big Pack Wt</label>
-                            <input type="number" min="1" class="form-control" formControlName="big_pack_weight"
+                            <input type="number" min="0" class="form-control" formControlName="big_pack_weight"
                                 placeholder="Big Pack Wt">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Box Wt</label>
-                            <input type="number" min="1" class="form-control" formControlName="box_weight"
+                            <input type="number" min="0" class="form-control" formControlName="box_weight"
                                 placeholder="Box Wt">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Box Qty</label>
-                            <input type="number" min="1" class="form-control" formControlName="box_qty"
+                            <input type="number" min="0" class="form-control" formControlName="box_qty"
                                 placeholder="Box Qty">
                         </div>
                     </ng-container>
                     
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Labour</label>
-                        <input type="number" min="1" class="form-control" formControlName="labour" placeholder="Labour"
+                        <input type="number" min="0" class="form-control" formControlName="labour" placeholder="Labour"
                             [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('labour')?.invalid) ||
                             (itemMaster.get('labour')?.touched &&
@@ -94,13 +97,13 @@
                     </div>
                     <div class="col-lg-2 col-md-12 form-group" *ngIf="itemMaster.get('labour_by')?.value == 'piece'">
                         <label for="">Piece Quantity</label>
-                        <input type="number" min="1" class="form-control" formControlName="piece_quantity"
+                        <input type="number" min="0" class="form-control" formControlName="piece_quantity"
                             placeholder="Piece Quantity" [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('piece_quantity')?.invalid) ||
                             (itemMaster.get('piece_quantity')?.touched &&
                             itemMaster.get('piece_quantity')?.invalid)">
                     </div>
-                    <div class="col-lg-2 col-md-12 form-group">
+                    <div class="col-lg-2 col-md-12 form-group p-0">
                         <label for="">Labour By</label>
                         <select formControlName="labour_by" class="form-control form-select" [class.is-invalid]="(formRef.submitted &&
                         itemMaster.get('labour_by')?.invalid) ||
@@ -114,7 +117,7 @@
                     </div>
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Gold Rate</label>
-                        <input type="number" min="1" class="form-control" formControlName="gold_rate"
+                        <input type="number" min="0" class="form-control" formControlName="gold_rate"
                             placeholder="Gold Rate" [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('gold_rate')?.invalid) ||
                             (itemMaster.get('gold_rate')?.touched &&
@@ -136,8 +139,8 @@
                         <label for="">Total Labour</label>
                         <span class="form-control">{{getNetWeight('total_labour')}}</span>
                     </div>
-                </ng-container>
-                <div class="add-listings-btn col-lg-2 col-md-12" style="text-align: right;display: flex;align-items: end;">
+                <!-- </ng-container> -->
+                <div class="p-0" style="display: flex;align-items: end;">
                     <div class="form-group">
                         <button type="submit" class="submit_btn m-0">{{submitButton}}</button>
                     </div>
@@ -163,7 +166,7 @@
 
 
     <div class="card" *ngIf="productList.length > 0">
-        <p-table #dt1 class="table-container" [value]="productList" dataKey="id"
+        <p-table #dt1 [value]="productList" dataKey="id"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="['name']">
@@ -183,10 +186,10 @@
                     <th>Gross Wt</th>
                     <th>Melting</th>
                     <th>Wastage</th>
-                    <th>Small Pack Wt</th>
-                    <th>Small Pack Qty</th>
-                    <th>Big Pack Wt</th>
-                    <th>Big Pack Qty</th>
+                    <th>Small Pac. Wt</th>
+                    <th>Small Pac. Qty</th>
+                    <th>Big Pac. Wt</th>
+                    <th>Big Pac. Qty</th>
                     <th>Box Wt</th>
                     <th>Box Qty</th>
                     <th>Labour</th>
@@ -206,7 +209,7 @@
                     <!-- <td>{{product.stock}}</td> -->
                     <td>{{product.weight ? product.weight : 0}}</td>
                     <td>{{product.melting ? product.melting : 0}}</td>
-                    <td>{{product.wastage ? product.wastage : 0}}</td>
+                    <td>{{product.wastage ? (product.wastage  | number) : 0}}</td>
                     <td>{{product.small_pack_weight ? product.small_pack_weight : 0}}</td>
                     <td>{{product.small_pack_quantity ? product.small_pack_quantity : 0}}</td>
                     <td>{{product.big_pack_weight ? product.big_pack_weight : 0}}</td>
@@ -218,9 +221,9 @@
                     <td>{{product.total_labour}}</td>
                     <td>{{product.piece_quantity ? product.piece_quantity : 0}}</td>
                     <!-- <td>{{product.gold_rate}}</td> -->
-                    <td>{{product.purchasing_price}}</td>
+                    <td>{{product.purchasing_price ? (product.purchasing_price| number) : 0}}</td>
                     <td>{{product.fine}}</td>
-                    <td style="cursor: pointer; display: flex; justify-content: space-between;">
+                    <td style="cursor: pointer; display: flex; justify-content: center;">
                         <i (click)="editItem(ri)" class="mb-3 pi pi-pencil text-2xl text-color-secondary"></i>
                     </td>   
                 </tr>

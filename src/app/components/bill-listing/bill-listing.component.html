@@ -3,11 +3,11 @@
     <h3>{{breadcrumb[0].title}}</h3>
 </div>
 
-<div class="bill-list" *ngIf="totalRows">
-    <p-table #dt1 [value]="totalRows" dataKey="id" [tableStyle]="{'min-width': '60rem'}" [rows]="10"
+<div class="bill-list">
+    <p-table #dt1 [value]="totalRows" dataKey="id" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['shop_name']">
+        [globalFilterFields]="['shop_name','bill_no','city']">
         <ng-template pTemplate="caption">
             <div class="d-flex align-items-center justify-content-between w-100">
                 <span class="p-input-icon-left ml-auto">
@@ -55,7 +55,7 @@
         <ng-template pTemplate="rowexpansion" let-product>
             <tr class="row-tr">
                 <td colspan="7">
-                    <div>
+                    <div class="bill-list-table">
                         <p-table [value]="product.bill_items" dataKey="id">
                             <ng-template pTemplate="header">
                                 <tr class="rowExpand">
@@ -80,6 +80,11 @@
                                     <th>Rate</th>
                                     <th>Fine</th>
                                 </tr>   
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">There are no product yet.</td>
+                                </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-items  let-ri="rowIndex">
                                 <tr class="rowExpand">

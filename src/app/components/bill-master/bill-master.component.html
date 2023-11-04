@@ -4,303 +4,222 @@
     <!-- Breadcrumb Area -->
     <div style="display: flex; justify-content: space-between;">
         <h3>{{breadcrumb[0].title}}</h3>
-        <div class="d-flex align-items-center">
-            <input type="checkbox" name="" id="" (click)="showCustomerDropdown($event)" value="Existing User" class="mx-2"><span class="cursor-pointer">Existing User</span>
-        </div>
+        <!-- <div class="d-flex align-items-center">
+            <input type="checkbox" name="" id="" (click)="showCustomerDropdown($event)" value="Existing User"
+                class="mx-2"><span class="cursor-pointer">Existing User</span>
+        </div> -->
     </div>
     <!-- End Breadcrumb Area -->
 
+
     <!-- Start -->
-    <div class="add-listings-box1">
-        <form [formGroup]="itemMaster" (ngSubmit)="itemMasterSubmit(itemForm)" #itemForm="ngForm">
-            <div class="row">
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label>Bill No</label>
-                    <input class="form-control" [class.is-invalid]="itemForm.submitted &&
-                    itemMaster.get('bill_no')?.invalid ||
-                    (itemMaster.get('bill_no')?.touched &&
-                    itemMaster.get('bill_no')?.invalid)" type="text" formControlName="bill_no" placeholder="Enter Bill No" required>
+    <div class="add-listings-box1 itemMaster">
+        <form class="purchasing-table-form" [formGroup]="itemMaster" (ngSubmit)="itemMasterSubmit()">
+            <div class="row main-fields">
+                <div class="col-lg-2 col-md-12 form-group">
+                    <label>Bill No <span style="color: red;">*</span></label>
+                    <input class="form-control" [class.is-invalid]="(itemMaster.get('bill_no')?.touched &&
+                itemMaster.get('bill_no')?.invalid)" type="text" formControlName="bill_no" placeholder="Enter Bill No"
+                        required>
                     <div class="invalid-feedback"> Bill No is Required </div>
                 </div>
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label>Bill Date</label>
-                    <p-calendar placeholder="Enter Date" [class.is-invalid]="itemForm.submitted &&
-                    itemMaster.get('bill_date')?.invalid ||
-                    (itemMaster.get('bill_date')?.touched &&
-                    itemMaster.get('bill_date')?.invalid)" formControlName="bill_date"></p-calendar>
+                <div class="col-lg-2 col-md-12 form-group">
+                    <label>Bill Date <span style="color: red;">*</span></label>
+                    <p-calendar placeholder="Enter Date"  [showIcon]="true" [class.is-invalid]="(itemMaster.get('bill_date')?.touched &&
+                itemMaster.get('bill_date')?.invalid)" formControlName="bill_date"></p-calendar>
                     <div class="invalid-feedback mt-1"> Bill Date is Required </div>
                 </div>
 
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label>Customer Name*</label>
-                    <input type="text" *ngIf="!showCusDropdown" [class.is-invalid]="(itemForm.submitted &&
-                    itemMaster.get('name')?.invalid) ||
-                    (itemMaster.get('name')?.touched &&
-                    itemMaster.get('name')?.invalid)" placeholder="Select Customer" class="form-control" formControlName="name" placeholder="Name" required>
-
-                    <select *ngIf="showCusDropdown" (change)="setFieldValues()" [class.is-invalid]="(itemForm.submitted &&
-                    itemMaster.get('name')?.invalid) ||
-                    (itemMaster.get('name')?.touched &&
-                    itemMaster.get('name')?.invalid)" class="form-control form-select" formControlName="name"  required>
-                        <option value="">Select Customer</option>
-                        <ng-container *ngFor="let data of customerDropdown">
-                            <option [value]="data.bill_no">{{data.name}}</option>
-                        </ng-container>
-                    </select>
+                <div class="col-lg-2 col-md-12 form-group shop-div">
+                    <label>Customer Name <span style="color: red;">*</span></label>
+                    <p-dropdown formControlName="name" [class.is-invalid]="(getFormControl('name').touched && getFormControl('name').invalid)" [options]="customerDropdown"
+                    appendTo="body" optionLabel="name" placeholder="select customer" optionValue="bill_no"
+                    [editable]="true"></p-dropdown>
                     <div class="invalid-feedback"> Name is Required </div>
                 </div>
 
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label>Father's Name</label>
-                    <input type="text" class="form-control"  required [class.is-invalid]="(itemForm.submitted &&
-                    itemMaster.get('father_name')?.invalid) ||
-                    (itemMaster.get('father_name')?.touched &&
-                    itemMaster.get('father_name')?.invalid)" formControlName="father_name" placeholder="Father's Name">
+                <div class="col-lg-2 col-md-12 form-group">
+                    <label>Father's Name <span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" required
+                        [class.is-invalid]="(getFormControl('father_name').touched && getFormControl('father_name').invalid)"
+                        formControlName="father_name" placeholder="Father's Name">
                     <div class="invalid-feedback"> Father Name is Required </div>
                 </div>
 
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label>Mobile No</label>
-                    <input type="text" pKeyFilter="int" maxlength="10" class="form-control" [class.is-invalid]="(itemForm.submitted &&
-                    itemMaster.get('mobile')?.invalid) ||
-                    (itemMaster.get('mobile')?.touched &&
-                    itemMaster.get('mobile')?.invalid)" formControlName="mobile" placeholder="Mobile No.">
+                <div class="col-lg-2 col-md-12 form-group">
+                    <label>Mobile No </label>
+                    <input type="text" pKeyFilter="int" maxlength="10" class="form-control"
+                        [class.is-invalid]="(getFormControl('mobile').touched && getFormControl('mobile').invalid)"
+                        formControlName="mobile" placeholder="Mobile No.">
                     <div class="invalid-feedback"> Mobile No is Required </div>
                 </div>
 
-                <div class="col-lg-3 col-md-12 form-group">
+                <div class="col-lg-2 col-md-12 form-group shop-div">
                     <label>Shop Name</label>
-                    <input class="form-control" [class.is-invalid]="itemForm.submitted &&
-                    itemMaster.get('shop_name')?.invalid ||
-                    (itemMaster.get('shop_name')?.touched &&
-                    itemMaster.get('shop_name')?.invalid)" type="text" formControlName="shop_name" placeholder="Shop Name">
+                    <p-dropdown formControlName="shop_name" placeholder="select shop" [options]="shopList" appendTo="body" optionLabel="shop_name" optionValue="shop_name"
+                        [editable]="true"></p-dropdown>
                     <div class="invalid-feedback"> Shop Name is Required </div>
                 </div>
-                <div class="col-lg-3 col-md-12 form-group">
+                <div class="col-lg-2 col-md-12 form-group">
                     <label>City</label>
-                    <input class="form-control" [class.is-invalid] = "itemForm.submitted &&
-                    itemMaster.get('city')?.invalid ||
-                    (itemMaster.get('city')?.touched &&
-                    itemMaster.get('city')?.invalid)" type="text" formControlName="city" placeholder="City">
+                    <input class="form-control"
+                        [class.is-invalid]="(getFormControl('city').touched && getFormControl('city').invalid)"
+                        type="text" formControlName="city" placeholder="City">
                     <div class="invalid-feedback"> City is Required </div>
                 </div>
-                <div class="col-lg-3 col-md-12 form-group">
+                <div class="col-lg-2 col-md-12 form-group">
                     <label>Aadhar</label>
-                    <input type="text" class="form-control" [class.is-invalid] = "itemForm.submitted &&
-                    itemMaster.get('aadhar')?.errors?.['pattern'] ||
-                    (itemMaster.get('aadhar')?.touched &&
-                    itemMaster.get('aadhar')?.errors?.['pattern'])" oninput="this.value= this.value.toUpperCase()"
-                        formControlName="aadhar" placeholder="aadhar No">
+                    <input type="text" class="form-control"
+                        [class.is-invalid]="(getFormControl('aadhar').touched && getFormControl('aadhar').errors?.pattern)"
+                        oninput="this.value= this.value.toUpperCase()" formControlName="aadhar" placeholder="aadhar No">
                     <div class="invalid-feedback"> Aadhar is Not Valid </div>
                 </div>
 
 
 
-                <div class="col-lg-3 col-md-12 form-group">
+                <div class="col-lg-2 col-md-12 form-group">
                     <label>PAN </label>
-                    <input class="form-control" type="text" [class.is-invalid]="itemForm.submitted &&
-                    itemMaster.get('pan')?.errors?.['pattern'] ||
-                    (itemMaster.get('pan')?.touched &&
-                    itemMaster.get('pan')?.errors?.['pattern'])" oninput="this.value= this.value.toUpperCase()"
+                    <input class="form-control" type="text" [class.is-invalid]="(getFormControl('pan').touched &&
+                getFormControl('pan').errors?.pattern)" oninput="this.value= this.value.toUpperCase()"
                         formControlName="pan" placeholder="PAN">
                     <div class="invalid-feedback"> Pan is Not Valid </div>
                 </div>
             </div>
-            <div class="row">
-                <h3>Product List</h3>
-                <div class="row mt-2">
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Product</label>
-                        <select formControlName="product_id" (change)="setFieldValues($event)" class="form-control form-select" id="product"
-                            [class.is-invalid]="(showValidation &&
-                                itemMaster.get('product_id')?.value == '') ||
-                                (itemMaster.get('product_id')?.touched &&
-                                itemMaster.get('product_id')?.value == '')">
-                            <option value="" disabled selected>Product</option>
-                            <ng-container *ngFor="let item of productList">
-                                <option [value]="item?.id">{{item?.name}}</option>
-                            </ng-container>
-                        </select>
-                        <div class="invalid-feedback"> Product is Required</div>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Gross Weight</label>
-                        <input type="number" min="1" class="form-control" formControlName="weight"
-                            placeholder="Gross Weight">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Melting</label>
-                        <input type="text" class="form-control" formControlName="melting" placeholder="Melting">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Wastage</label>
-                        <input type="text" class="form-control" formControlName="wastage" placeholder="Wastage">
-                    </div>
 
-                    <div class="col-lg-2 col-md-12 form-group d-flex align-items-center">
-                        <input type="checkbox" value="Less Weight" formControlName="less_weight"><span class="mx-2">Less
-                            Weight</span>
-                    </div>
-
-                    <ng-container *ngIf="itemMaster.controls['less_weight'].value">
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Small Pack Quantity</label>
-                            <input type="number" min="1" class="form-control" formControlName="small_pack_quantity"
-                                placeholder="Small Pack Qty">
-                        </div>
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Small Pack Weight</label>
-                            <input type="number" min="1" class="form-control" formControlName="small_pack_weight"
-                                placeholder="Small Pack Wt">
-                        </div>
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Big Pack Quantity</label>
-                            <input type="number" min="1" class="form-control" formControlName="big_pack_quantity"
-                                placeholder="Big Pack Qty">
-                        </div>
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Big Pack Weight</label>
-                            <input type="number" min="1" class="form-control" formControlName="big_pack_weight"
-                                placeholder="Big Pack Wt">
-                        </div>
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Box Weight</label>
-                            <input type="number" min="1" class="form-control" formControlName="box_weight"
-                                placeholder="Box Wt">
-                        </div>
-                        <div class="col-lg-2 col-md-12 form-group">
-                            <label for="">Box Quantity</label>
-                            <input type="number" min="1" class="form-control" formControlName="box_quantity"
-                                placeholder="Box Qty">
-                        </div>
+            <h4 class="my-3">Item List</h4>
+            <div style="overflow-x: auto; max-height: 240px;">
+                <table class="table-bordered table item-table" style="max-height: 240px;">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th style="min-width: 100px;">Product</th>
+                            <th>Grs Wt</th>
+                            <th>Melting</th>
+                            <th>Wastage</th>
+                            <th>Sm Pck Wt</th>
+                            <th>Sm Pck Qty</th>
+                            <th>Big P Wt</th>
+                            <th>Big P Qty</th>
+                            <th>Box Wt</th>
+                            <th>Box Qty</th>
+                            <th>Labour By</th>
+                            <th>Labour</th>
+                            <th>Total Lab</th>
+                            <th>Piec. Qty</th>
+                            <th>Net Wt</th>
+                            <th style="min-width: 70px;">Rate</th>
+                            <th style="min-width: 70px;">Fine</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <ng-container formArrayName="productList">
+                        <tbody *ngFor="let product of getProductArray().controls; index as index; last as last">
+                            <tr [formGroupName]="index">
+                                <td style="text-align: center;">{{index+1}}</td>
+                                <td style="min-width: 100px;">
+                                    <p-dropdown formControlName="product_id"
+                                        (change)="setFieldValues('product_id' , index)" [options]="products"
+                                        appendTo="body" optionLabel="name" optionValue="id"
+                                        [editable]="true"></p-dropdown>
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="weight">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="melting">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="wastage">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="small_pack_weight">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="small_pack_quantity">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="big_pack_weight">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="big_pack_quantity">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="box_weight">
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="box_quantity">
+                                </td>
+                                <td>
+                                    <select formControlName="labour_by" class="form-control form-select labour-select">
+                                        <option value="" disabled>Labour By</option>
+                                        <ng-container *ngFor="let value of labour_dropdown">
+                                            <option [value]="value.actualValue">{{value.value}}</option>
+                                        </ng-container>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="labour">
+                                </td>
+                                <td>
+                                    <span
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('total_labour'
+                                        , index)}}</span>
+                                </td>
+                                <td>
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="piece_quantity">
+                                </td>
+                                <td><span style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('net
+                                        weight' , index)}}</span></td>
+                                <td><span
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('rate'
+                                        , index)}}</span></td>
+                                <td><span
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('fine'
+                                        , index)}}</span></td>
+                                <td style="text-align: center; cursor: pointer;" *ngIf="last"
+                                    (click)="addProductRow('add')">
+                                    <span>+</span>
+                                </td>
+                                <td style="text-align: center; cursor: pointer;" *ngIf="!last"
+                                    (click)="addProductRow('remove',index)">
+                                    <span>-</span>
+                                </td>
+                            </tr>
+                        </tbody>
                     </ng-container>
+                </table>
+            </div>
 
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Labour</label>
-                        <input type="number" min="1" class="form-control" formControlName="labour" placeholder="Labour">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group"
-                        *ngIf="itemMaster.get('labour_by')?.value == 'piece'">
-                        <label for="">Piece Quantity</label>
-                        <input type="number" min="1" class="form-control" formControlName="piece_quantity"
-                            placeholder="Quantity">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Labour By</label>
-                        <select formControlName="labour_by" class="form-control form-select" [class.is-invalid]="(showValidation &&
-                            itemMaster.get('labour_by')?.value == '') ||
-                            (itemMaster.get('labour_by')?.touched &&
-                            itemMaster.get('labour_by')?.value == '')">
-                            <option value="" disabled>Labour By</option>
-                            <ng-container *ngFor="let value of labour_dropdown">
-                                <option [value]="value.actualValue">{{value.value}}</option>
-                            </ng-container>
-                        </select>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Gold Rate</label>
-                        <input type="number" min="1" class="form-control" formControlName="gold_rate"
-                            placeholder="Gold Rate">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Net Weight</label>
-                        <span class="form-control">{{getNetWeight('net weight')}}</span>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Rate</label>
-                        <span class="form-control">{{getNetWeight('rate')}}</span>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Fine</label>
-                        <span class="form-control">{{getNetWeight('fine')}}</span>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Total Labour</label>
-                        <span class="form-control">{{getNetWeight('total_labour')}}</span>
-                    </div>
-                    <div class="add-listings-btn col-lg-12 col-md-12 d-flex justify-content-end">
-                        <div class="form-group">
-                            <button type="button" (click)="showValidations()" class="submit_btn m-0">{{addButton}}</button>
-                        </div>
-                    </div>
+
+            <div class="add-listings-btn mt-1">
+                <div style="margin: 10px 0; float: right;width: 29.2%;">
+                    <table class="table-bordered item-table" style="border-color: #dedede;width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Total Fine</th>
+                                <th>Gold Rate</th>
+                                <th>Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{getAmount('total_fine')}}</td>
+                                <td><input type="number" min="0" class="form-control" formControlName="gold_rate"
+                                        placeholder="Gold Rate"></td>
+                                <td>{{getAmount('payment') | number}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="submit_btn mt-2" style="float: right;">Submit</button>
                 </div>
             </div>
-            <button #billSubmit class="submit_btn m-0" hidden>Submit</button>
         </form>
-
     </div>
-
-
-    <div style="padding: 0 25px;">
-        <div style="overflow-x: auto;">
-            <table class="table-bordered w-100 table">
-                <thead>
-                    <tr>
-                        <!-- <th>Shop Name</th> -->
-                        <th>Product Name</th>
-                        <th>Gross Wt</th>
-                        <th>Melting</th>
-                        <th>Wastage</th>
-                        <th>Small Pack Wt</th>
-                        <th>Small Pack Qty</th>
-                        <th>Big Pack Wt</th>
-                        <th>Big Pack Qty</th>
-                        <th>Box Wt</th>
-                        <th>Box Qty</th>
-                        <th>Labour</th>
-                        <th>Labour By</th>
-                        <th>Total Labour</th>
-                        <th>Piece Qty</th>
-                        <th>Gold Rate</th>
-                        <th>Net Wt</th>
-                        <th>Rate</th>
-                        <th>Fine</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let product of totalRows; index as index">
-                    <tr>
-                        <!-- <td>{{product.shop_name}}</td> -->
-                        <td>
-                            <ng-container *ngFor="let productname of productList;">
-                                <span *ngIf="productname.id == product.product_id">{{productname.name}}</span>
-                            </ng-container></td>
-                        <td>{{product.weight ? product.weight : 0}}</td>
-                        <td>{{product.melting ? product.melting : 0}}</td>
-                        <td>{{product.wastage ? product.wastage : 0}}</td>
-                        <td>{{product.small_pack_weight ? product.small_pack_weight : 0}}</td>
-                        <td>{{product.small_pack_quantity ? product.small_pack_quantity : 0}}</td>
-                        <td>{{product.big_pack_weight ? product.big_pack_weight : 0}}</td>
-                        <td>{{product.big_pack_quantity ? product.big_pack_quantity : 0}}</td>
-                        <td>{{product.box_weight ? product.box_weight : 0}}</td>
-                        <td>{{product.box_quantity ? product.box_quantity : 0}}</td>
-                        <td>{{product.labour ?? 0}}</td>
-                        <td>{{product.labour_by ?? 0}}</td>
-                        <td>{{product.total_labour ?? 0}}</td>
-                        <td>{{product.piece_quantity ? product.piece_quantity : 0}}</td>
-                        <td>{{product.gold_rate ?? 0}}</td>
-                        <td>{{product.net_weight ?? 0}}</td>
-                        <td>{{product.rate ?? 0}}</td>
-                        <td>{{product.fine ?? 0}}</td>
-                        <td style="cursor: pointer; display: flex; justify-content: space-between;">
-                            <i (click)="EditForm(index , 'edit')" class="mb-3 pi pi-pencil text-2xl text-color-secondary"></i>
-                            <i (click)="EditForm(index , 'delete')" class="mb-3 pi pi-trash text-2xl text-color-secondary"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <!-- <span>Amount : {{getAmount()}}</span> -->
-        </div>
-    </div>
-    <div class="add-listings-btn col-lg-12 col-md-12 d-flex mt-1 justify-content-end">
-        <div class="form-group" style="margin-right: 40px!important;">
-            <button type="submit" class="submit_btn mt-0" (click)="triggerSubmitButton()">Submit</button>
-        </div>
-    </div>
-
-    <div style="text-align: right; margin: 20px 0;">
-        <span>Total Fine : {{getAmount('total_fine')}}</span><br>
-        <span>Gold Bhav : {{getAmount('gold_bhav')}}</span><br>
-        <span>Payment : {{getAmount('payment') | number}}</span><br>
-    </div>
-</div>

@@ -1,313 +1,52 @@
-// .listing th{
-//     white-space: nowrap;
-// }
+::ng-deep{
+    .p-datatable-wrapper  {
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
+    }
 
-// .add-listings-box1 {
-//     margin-bottom: 30px;
-//     background-color: var(--whiteColor);
-//     box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-//     border-radius: 5px;
-//     padding: 10px 25px 10px 25px;
+    .p-datatable .p-datatable-header{
+        padding: 0.5rem 0.1rem;
+    }
 
-//     h3 {
-//         padding: 10px 25px 10px;
-//         border-bottom: 1px dashed #eeeeee;
+    .p-input-icon-left > .p-inputtext{
+        padding: 0.5rem 2rem;
+    }
 
-//         font: {
-//             size: 17px;
-//             weight: 600;
-//         }
+    .p-datatable .p-datatable-thead > tr > th , .p-datatable .p-datatable-tbody > tr > td{
+        font-size: 15px;
+        padding: 0.3rem 0.5rem;
+    }
 
-//         margin: {
-//             bottom: 25px;
-//             left: -25px;
-//             right: -25px;
-//         }
+    .p-datatable-wrapper {
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .bill-list .p-datatable .p-datatable-thead > tr > th{
+        white-space: nowrap;
+    }
 
-//         ;
-//     }
+    // .p-button.p-button-icon-only{
+    //     height: 1.5rem!important;
+    // }
 
-//     form {
-//         .form-group {
-//             margin: 10px 0;
+    .bill-list .rowExpand td{
+        border: none!important;
+    }
 
-//             .form-control {
-//                 border: 1px solid #d5d5d5 !important;
-//                 border-radius: 5px;
-//                 background-color: #f9f9f9 !important;
-//                 padding-top: 6px;
-//             }
-//         }
+    .bill-list .rowExpand th{
+        padding: 5px 20px 10px!important;
+    }
 
-//         input,
-//         select {
-//             height: 35px;
-//         }
+    .bill-list .row-tr td:first-child{
+        padding: 10px!important;
+    }
 
-//         label {
-//             display: block;
-//             margin-bottom: 5px;
-//             color: var(--blackColor);
-//             position: relative;
-//             padding-left: 2px;
-//             font-weight: 500;
-//             font-size: 14px;
-//         }
-
-//         .radio-buttons {
-//             display: flex;
-//             justify-content: space-between;
-//             width: 100px;
-
-//             .radio-button {
-//                 display: flex;
-//                 align-items: center;
-//                 margin: 5px 0 0;
-
-//                 input {
-//                     margin-bottom: 0;
-//                 }
-//             }
-//         }
-
-//     }
-// }
-
-// .add-listings-btn {
-
-//     button {
-//         display: inline-block;
-//         padding: 8px 30px;
-//         box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
-//         border-radius: 5px;
-//         margin-top: 25px;
-//         transition: var(--transition);
-//         border: none;
-//         background-color: var(--mainColor);
-
-//         font: {
-//             size: var(--fontSize);
-//             weight: 600;
-//         }
-
-//         ;
-
-//         &:hover {
-//             background-color: #3b99ca;
-//             color: var(--whiteColor);
-//         }
-//     }
-
-//     .reset_btn {
-//         background-color: var(--optionalColor);
-//         color: var(--whiteColor);
-//     }
-
-//     .submit_btn {
-//         background-color: var(--mainColor);
-//         color: var(--whiteColor);
-//     }
-// }
-
-// .alert {
-//     padding: 10px;
-//     margin-top: 5px;
-// }
-
-
-// .star_class {
-//     color: red;
-// }
-
-// /* Max width 767px */
-// @media only screen and (max-width: 767px) {
-
-//     .add-listings-box {
-//         padding: 0 20px 0 20px;
-
-//         h3 {
-//             padding: 15px 20px;
-
-//             margin: {
-//                 bottom: 20px;
-//                 left: -20px;
-//                 right: -20px;
-//             }
-
-//             ;
-//         }
-
-//         .form-group {
-//             .form-control {
-//                 height: 35px;
-//                 font-size: 13.5px;
-
-//                 padding: {
-//                     right: 10px;
-//                     left: 10px;
-//                 }
-
-//                 ;
-//             }
-
-//             select {
-//                 height: 35px;
-//                 line-height: 45px;
-//                 font-size: 13.5px;
-
-//                 padding: {
-//                     right: 10px;
-//                     left: 10px;
-//                 }
-//             }
-//         }
-//     }
-
-// }
-
-// .error {
-//     margin-top: 0.25rem;
-//     font-size: 0.875em;
-//     color: #dc3545;
-// }
-
-
-// /* Min width 576px to Max width 767px */
-// @media (max-width: 767px) {
-//     .add-listings-box {
-//         button {
-//             margin-top: 0;
-//         }
-//     }
-
-//     .form-group {
-//         label {
-//             margin-bottom: 3px !important;
-//         }
-//     }
-// }
-
-// /* Min width 768px to Max width 991px */
-// @media (min-width: 768px) and (max-width: 991px) {
-
-//     .add-listings-box {
-//         button {
-//             margin-top: 0;
-//         }
-//     }
-// }
-
-// ::ng-deep {
-
-//     .p-column-filter-row .p-column-filter-menu-button,
-//     .p-column-filter-row .p-column-filter-clear-button {
-//         display: none !important;
-//     }
-
-//     p-calendar .p-inputtext {
-//         border: 1px solid #d5d5d5 !important;
-//         border-radius: 5px;
-//         background-color: #f9f9f9 !important;
-//         padding-top: 6px;
-//     }
-
-//     .p-multiselect {
-//         height: 33px !important;
-//         display: flex;
-//         justify-content: center;
-//         align-items: center;
-//         border: 1px solid #d5d5d5 !important;
-//         border-radius: 5px;
-//         background-color: #f9f9f9 !important;
-
-//         .p-multiselect-label.p-placeholder {
-//             font-size: 14px;
-//         }
-
-//         .p-multiselect-label {
-//             height: 100% !important;
-//         }
-//     }
-
-//     .p-multiselect .p-multiselect-label.p-placeholder {
-//         display: flex;
-//         align-items: center;
-//         font-size: 13px;
-//     }
-
-//     .p-multiselect .p-multiselect-label,
-//     .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
-//         font-size: 12px;
-//         display: flex;
-//         align-items: center;
-//     }
-
-//     .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight,
-//     .p-multiselect-item:focus {
-//         background: var(--whiteColor);
-//         color: var(--mainColor);
-//         border: none;
-//         outline: none;
-//         box-shadow: none;
-//     }
-
-//     .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
-//         border: none;
-//         outline: none;
-//         box-shadow: none;
-//     }
-// }
-
-
-// table th {
-//     white-space: nowrap;
-// }
-
-
-// @media(max-width : 768px) {
-//     table {
-//         display: block;
-//         overflow-x: auto;
-//     }
-// }
-
-// input::-webkit-outer-spin-button,
-// input::-webkit-inner-spin-button {
-//     -webkit-appearance: none;
-//     margin: 0;
-// }
-
-// .form-control.is-invalid, .was-validated .form-control:invalid{
-//     padding-right: 0.6em!important;
-// }
-
-// select.form-control.is-invalid{
-//     margin-bottom: 0.3rem!important;
-// }
-
-::ng-deep .p-datatable-wrapper {
-    overflow-x: auto;
-    width: 100%;
-    max-width: 100%;
-    /* Optional: You can adjust max-width as needed */
-}
-
-::ng-deep .bill-list .p-datatable .p-datatable-thead > tr > th{
-    white-space: nowrap;
-}
-
-::ng-deep .bill-list .p-datatable .p-datatable-tbody > tr > td{
-    padding: 10px 20px 5px;
-}
-
-::ng-deep .bill-list .rowExpand td{
-    border: none!important;
-}
-
-::ng-deep .bill-list .rowExpand th{
-    padding: 5px 20px 10px!important;
-}
-
-::ng-deep .bill-list .row-tr td:first-child{
-    padding: 10px!important;
+    tr td button{
+        padding: 0!important;
+        height: 2rem!important;
+    }
+    
 }

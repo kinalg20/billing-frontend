@@ -26,6 +26,7 @@ export class ItemMasterComponent implements OnInit {
   // msgs: Message[] = [];
   errorMsg: string = "";
   date: any;
+  showAddForm : boolean = false;
   errorMsgCheck: string = "";
   itemMasterTable: any = [];
   myDate: any;
@@ -51,7 +52,7 @@ export class ItemMasterComponent implements OnInit {
 
   breadcrumb = [
     {
-      title: "Item Master",
+      title: "Stock ",
       subTitle: "Dashboard",
     },
   ];
@@ -131,7 +132,10 @@ export class ItemMasterComponent implements OnInit {
       this.utility.loader(false);
       this.productList = res.data;
       console.log(this.productList);
-    });
+    })
+    .catch((err)=>{
+      this.utility.loader(false);
+    })
   }
 
   editProductId: any;
