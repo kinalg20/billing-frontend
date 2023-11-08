@@ -21,11 +21,31 @@
                         purchasingForm.get('shop_name')?.invalid)" required>
                     <div class="invalid-feedback"> Shop Name is Required</div>
                 </div>
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>Bill No <span style="color: red;">*</span></label>
+                    <input class="form-control" [class.is-invalid]="(purchasingForm.get('bill_no')?.touched &&
+                purchasingForm.get('bill_no')?.invalid)" type="text" formControlName="bill_no" placeholder="Enter Bill No"
+                        required>
+                    <div class="invalid-feedback"> Bill No is Required </div>
+                </div>
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>Bill Date <span style="color: red;">*</span></label><br>
+                    <p-calendar placeholder="Enter Date" dateFormat="dd/mm/yy" [showIcon]="true" [class.is-invalid]="(purchasingForm.get('bill_date')?.touched &&
+                purchasingForm.get('bill_date')?.invalid)" formControlName="bill_date"></p-calendar>
+                    <div class="invalid-feedback mt-1"> Bill Date is Required </div>
+                </div>
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>City <span style="color: red;">*</span></label>
+                    <input class="form-control"
+                        [class.is-invalid]="(purchasingForm.get('city')?.touched && purchasingForm.get('city')?.invalid)"
+                        type="text" formControlName="city" placeholder="City" required>
+                    <div class="invalid-feedback"> City is Required </div>
+                </div>
             </div>
 
             <h4 class="heading-css">Item List</h4>
             <div style="overflow-x: auto; max-height: 240px;">
-                <table class="table-bordered table" style="max-height: 240px;">
+                <table class="table-bordered table purchasing-table" style="max-height: 240px;">
                     <thead>
                         <tr>
                             <th>S.No.</th>
@@ -54,14 +74,11 @@
                             <tr [formGroupName]="index">
                                 <td style="text-align: center;">{{index+1}}</td>
                                 <td style="min-width: 100px;">
-                                    <p-dropdown formControlName="product_id" [options]="products" appendTo="body" optionLabel="name" optionValue="id" [editable]="true"></p-dropdown>
+                                    <p-dropdown formControlName="product_id" (onChange)="setProductMelting(index)"  [options]="products" appendTo="body" optionLabel="name" optionValue="id" [editable]="true"></p-dropdown>
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="gross_weight" [class.is-invalid]="(formRef.submitted &&
-                                    purchasingForm.get('gross_weight')?.invalid) ||
-                                    (purchasingForm.get('gross_weight')?.touched &&
-                                    purchasingForm.get('gross_weight')?.invalid)">
+                                        formControlName="gross_weight">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control" formControlName="melting">

@@ -13,8 +13,8 @@
     <!-- Start -->
     <div class="add-listings-box1">
         <form [formGroup]="itemMaster" (ngSubmit)="itemMasterSubmit(formRef)" #formRef="ngForm">
-            <div class="row m-0" *ngIf="showAddForm">
-                <div class="col-lg-2 col-md-12 form-group p-0">
+            <div class="row m-0">
+                <div class="col-lg-2 col-md-12 form-group">
                     <label for="">Product</label>
                     <input type="text" class="form-control" formControlName="name" placeholder="Product Name"
                         [class.is-invalid]="(formRef.submitted &&
@@ -23,14 +23,23 @@
                         itemMaster.get('name')?.invalid)" >
                     <div class="invalid-feedback"> Product is Required</div>
                 </div>
-                <!-- <ng-container *ngIf="submitButton == 'Update'"> -->
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Gross Weight</label>
-                        <input type="number" min="0" class="form-control" formControlName="gross_weight"
+                        <input type="number" min="0" class="form-control" formControlName="weight"
                             placeholder="Gross Weight" [class.is-invalid]="(formRef.submitted &&
-                            itemMaster.get('gross_weight')?.invalid) ||
-                            (itemMaster.get('gross_weight')?.touched &&
-                            itemMaster.get('gross_weight')?.invalid)">
+                            itemMaster.get('weight')?.invalid) ||
+                            (itemMaster.get('weight')?.touched &&
+                            itemMaster.get('weight')?.invalid)">
+                    </div>
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Sell Labour</label>
+                        <input type="number" min="0" class="form-control" formControlName="sell_labour"
+                            placeholder="Gross Weight">
+                    </div>
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Sell Rate</label>
+                        <input type="number" min="0" class="form-control" formControlName="sell_rate"
+                            placeholder="Gross Weight">
                     </div>
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Melting</label>
@@ -103,7 +112,7 @@
                             (itemMaster.get('piece_quantity')?.touched &&
                             itemMaster.get('piece_quantity')?.invalid)">
                     </div>
-                    <div class="col-lg-2 col-md-12 form-group p-0">
+                    <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Labour By</label>
                         <select formControlName="labour_by" class="form-control form-select" [class.is-invalid]="(formRef.submitted &&
                         itemMaster.get('labour_by')?.invalid) ||
@@ -139,12 +148,11 @@
                         <label for="">Total Labour</label>
                         <span class="form-control">{{getNetWeight('total_labour')}}</span>
                     </div>
-                <!-- </ng-container> -->
-                <div class="p-0" style="display: flex;align-items: end;">
-                    <div class="form-group">
-                        <button type="submit" class="submit_btn m-0">{{submitButton}}</button>
+                    <div class="col-lg-8 col-md-12 form-group" style="display: flex; align-items: center; justify-content: right;">
+                        <div class="form-group">
+                            <button type="submit" class="submit_btn m-0">{{submitButton}}</button>
+                        </div>
                     </div>
-                </div>
             </div>
         </form>
 
@@ -182,7 +190,7 @@
                 <tr>
                     <th>S.No.</th>
                     <th>Product Name</th>
-                    <!-- <th>Stock</th> -->
+                    <th>Stock</th>
                     <th>Gross Wt</th>
                     <th>Melting</th>
                     <th>Wastage</th>
@@ -193,12 +201,14 @@
                     <th>Box Wt</th>
                     <th>Box Qty</th>
                     <th>Labour</th>
-                    <!-- <th>Labour By</th> -->
+                    <th>Labour By</th>
                     <th>Total Labour</th>
                     <th>Piece Qty</th>
-                    <!-- <th>Gold Rate</th> -->
+                    <th>Gold Rate</th>
                     <th>Rate</th>
                     <th>Fine</th>
+                    <th>Sell Rate</th>
+                    <th>Sell Labour</th>
                     <th>Action</th>
                 </tr>
             </ng-template>
@@ -206,7 +216,7 @@
                 <tr>
                     <td>{{ri + 1}}</td>
                     <td>{{product.name}}</td>
-                    <!-- <td>{{product.stock}}</td> -->
+                    <td>{{product.stock}}</td>
                     <td>{{product.weight ? product.weight : 0}}</td>
                     <td>{{product.melting ? product.melting : 0}}</td>
                     <td>{{product.wastage ? (product.wastage  | number) : 0}}</td>
@@ -217,12 +227,14 @@
                     <td>{{product.box_weight ? product.box_weight : 0}}</td>
                     <td>{{product.box_quantity ? product.box_quantity : 0}}</td>
                     <td>{{product.labour}}</td>
-                    <!-- <td>{{product.labour_by}}</td> -->
+                    <td>{{product.labour_by}}</td>
                     <td>{{product.total_labour}}</td>
                     <td>{{product.piece_quantity ? product.piece_quantity : 0}}</td>
-                    <!-- <td>{{product.gold_rate}}</td> -->
+                    <td>{{product.gold_rate}}</td>
                     <td>{{product.purchasing_price ? (product.purchasing_price| number) : 0}}</td>
                     <td>{{product.fine}}</td>
+                    <td>{{product.sell_rate}}</td>
+                    <td>{{product.sell_labour}}</td>
                     <td style="cursor: pointer; display: flex; justify-content: center;">
                         <i (click)="editItem(ri)" class="mb-3 pi pi-pencil text-2xl text-color-secondary"></i>
                     </td>   

@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 const exportsharedata: any = [
   ReactiveFormsModule,
@@ -18,7 +19,8 @@ const exportsharedata: any = [
   KeyFilterModule,
   InputTextModule,
   SidebarModule,
-  ButtonModule
+  ButtonModule,
+  AutoCompleteModule
 ]
 
 @NgModule({

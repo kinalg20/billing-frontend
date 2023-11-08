@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./purchase-master.component.scss']
 })
 export class PurchaseMasterComponent implements OnInit {
+  date: any;
   constructor(private FB: FormBuilder, private apiService: ApiService, private messageService: MessageService, private utility: AppUtility, private route: Router) { }
 
   products: any = [];
@@ -31,37 +32,44 @@ export class PurchaseMasterComponent implements OnInit {
   purchasingForm = this.FB.group({
     productList: this.FB.array([]),
     shop_name: new FormControl('', [Validators.required]),
+    bill_no: new FormControl('', [Validators.required]),
+    bill_date: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
     gold_rate: new FormControl('')
   })
 
   ngOnInit() {
     this.getItems();
-    this.addProductRow('add');
+    this.addProductRow('add', '', 20);
+    this.date = new Date();
+    this.purchasingForm.controls['bill_date'].setValue(this.date);
   }
 
-  addProductRow(string: any, index?: any) {
+  addProductRow(string: any, index?: any, rows?: any) {
     let product = this.getProductArray();
     if (string == 'add') {
-      product.push(this.FB.group({
-        product_id: new FormControl('', [Validators.required]),
-        melting: new FormControl(''),
-        wastage: new FormControl(''),
-        less_weight: new FormControl(''),
-        gross_weight: new FormControl(''),
-        small_pack_quantity: new FormControl(''),
-        small_pack_weight: new FormControl(''),
-        box_quantity: new FormControl(''),
-        box_weight: new FormControl(''),
-        big_pack_quantity: new FormControl(''),
-        big_pack_weight: new FormControl(''),
-        labour: new FormControl(''),
-        labour_by: new FormControl('weight'),
-        piece_quantity: new FormControl(''),
-        net_weight: new FormControl(3),
-        rate: new FormControl(0),
-        fine: new FormControl(0),
-        total_labour: new FormControl(0)
-      }))
+      for (let i = 0; i < rows; i++) {
+        product.push(this.FB.group({
+          product_id: new FormControl(''),
+          melting: new FormControl(''),
+          wastage: new FormControl(''),
+          less_weight: new FormControl(''),
+          gross_weight: new FormControl(''),
+          small_pack_quantity: new FormControl(''),
+          small_pack_weight: new FormControl(''),
+          box_quantity: new FormControl(''),
+          box_weight: new FormControl(''),
+          big_pack_quantity: new FormControl(''),
+          big_pack_weight: new FormControl(''),
+          labour: new FormControl(''),
+          labour_by: new FormControl('weight'),
+          piece_quantity: new FormControl(''),
+          net_weight: new FormControl(3),
+          rate: new FormControl(0),
+          fine: new FormControl(0),
+          total_labour: new FormControl(0)
+        }))
+      }
     } else {
       product.removeAt(index);
     }
@@ -88,7 +96,6 @@ export class PurchaseMasterComponent implements OnInit {
     this.product_list = this.purchasingForm.controls['productList'].value ?? [];
     this.product_controls = this.getProductArray();
     let product_control = this.getProductArray();
-    console.log('---', product_control.controls[index].get('net_weight')?.value, this.product_list);
 
     let product_weight = 0;
     let netWeight = 0;
@@ -127,15 +134,24 @@ export class PurchaseMasterComponent implements OnInit {
   totalRows: any = [];
 
   submitApi(form: any) {
+    this.purchasingForm.markAllAsTouched();
     if (this.purchasingForm.valid) {
       this.utility.loader(true);
+      let products: any = [];
       this.getProductArray().value.forEach((res: any) => {
-        res.gold_rate = this.purchasingForm.value.gold_rate
+        if (res.product_id) {
+          products.push(res);
+          res.gold_rate = this.purchasingForm.value.gold_rate
+        }
       })
+
       let object = {
         shop_name: this.purchasingForm.value.shop_name,
         gold_rate: this.purchasingForm.value.gold_rate,
-        products: this.getProductArray().value
+        bill_no: this.purchasingForm.value.bill_no,
+        bill_date: this.purchasingForm.value.bill_date,
+        city: this.purchasingForm.value.city,
+        products: products
       }
       this.apiService.postPurchasingFormData(object).then((res: any) => {
         this.purchasingForm.reset();
@@ -150,6 +166,9 @@ export class PurchaseMasterComponent implements OnInit {
           this.showToast('error', error.message)
         })
     }
+    else {
+      this.showToast('error', 'please fill required fields')
+    }
   }
 
 
@@ -159,7 +178,6 @@ export class PurchaseMasterComponent implements OnInit {
     let total3 = 0;
     let product_list = this.getProductArray().value;
     if (string == 'total_fine') {
-      debugger;
       product_list.forEach((res: any) => {
         total1 = total1 + res.fine;
       })
@@ -194,4 +212,18 @@ export class PurchaseMasterComponent implements OnInit {
     return this.purchasingForm.get('productList') as FormArray;
   }
 
+
+  setProductMelting(index: any) {
+    if (this.getProductArray().value[index].product_id) {
+      this.apiService.getProductById(this.getProductArray().value[index].product_id).then((res: any) => {
+        console.log(res.data);
+        let data = res.data;
+        this.product_controls = this.getProductArray();
+        this.product_controls.controls[index].controls['melting'].setValue(data.melting);
+      })
+        .catch((err: any) => {
+        })
+    }
+
+  }
 }

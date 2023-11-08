@@ -23,12 +23,16 @@ export class ApiService {
     return this.http.post(this._baseUrl + 'items', object).toPromise();
   }
 
-  putProduct(object: any) {
-    return this.http.put(this._baseUrl + 'items/' + object.productId, object).toPromise();
+  putProduct(object: any, product_id: any) {
+    return this.http.put(this._baseUrl + 'items/' + product_id, object).toPromise();
   }
 
   getAllProductList() {
     return this.http.get(this._baseUrl + 'items').toPromise();
+  }
+
+  getProductById(id:any) {
+    return this.http.get(this._baseUrl + 'items/'+id).toPromise();
   }
 
   postBill(object: any) {
@@ -49,19 +53,20 @@ export class ApiService {
     return this.http.post(this._baseUrl + 'purchasing', data).toPromise();
   }
 
-  getPurchasingFormData(){
+  getPurchasingFormData() {
     return this.http.get(this._baseUrl + 'purchasing').toPromise();
   }
-  
-  getDataByCustomerNameProductId(object:any){
+
+  getDataByCustomerNameProductId(object: any) {
+    debugger;
     return this.http.get(this._baseUrl + `customers/${object.bill_no}/${object.product_id}`).toPromise();
   }
-  
-  getUserProfile(id:any){
+
+  getUserProfile(id: any) {
     return this.http.get(this._baseUrl + `users/${id}`).toPromise();
   }
-  
-  getShopName(){
+
+  getShopName() {
     return this.http.get(this._baseUrl + `/shop-name`).toPromise();
   }
 

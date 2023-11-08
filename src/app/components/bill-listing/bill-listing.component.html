@@ -54,7 +54,7 @@
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-product>
             <tr class="row-tr">
-                <td colspan="7">
+                <td colspan="12">
                     <div class="bill-list-table">
                         <p-table [value]="product.bill_items" dataKey="id">
                             <ng-template pTemplate="header">
@@ -72,11 +72,11 @@
                                     <th>Box Wt</th>
                                     <th>Box Qty</th>
                                     <th>Labour</th>
-                                    <!-- <th>Labour By</th> -->
+                                    <th>Labour By</th>
                                     <th>Total Labour</th>
                                     <th>Piece Qty</th>
                                     <th>Gold Rate</th>
-                                    <!-- <th>Net Wt</th> -->
+                                    <th>Net Wt</th>
                                     <th>Rate</th>
                                     <th>Fine</th>
                                 </tr>   
@@ -105,17 +105,18 @@
                                     <td>{{items.box_weight ? items.box_weight : 0}}</td>
                                     <td>{{items.box_quantity ? items.box_quantity : 0}}</td>
                                     <td>{{items.labour}}</td>
-                                    <!-- <td>{{items.labour_by}}</td> -->
+                                    <td>{{items.labour_by}}</td>
                                     <td>{{items.piece_quantity ? items.piece_quantity : 0}}</td>
                                     <td>{{items.total_labour}}</td>
                                     <td>{{items.gold_rate}}</td>
-                                    <!-- <td>{{items.net_weight}}</td> -->
+                                    <td>{{items.net_weight}}</td>
                                     <td>{{items.rate}}</td>
                                     <td>{{items.fine}}</td>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="emptymessage">
                                 <tr>
+                                    <td colspan="1"></td>
                                     <td colspan="6">There are no product yet.</td>
                                 </tr>
                             </ng-template>

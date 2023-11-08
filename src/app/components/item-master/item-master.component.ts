@@ -26,14 +26,14 @@ export class ItemMasterComponent implements OnInit {
   // msgs: Message[] = [];
   errorMsg: string = "";
   date: any;
-  showAddForm : boolean = false;
+  showAddForm: boolean = false;
   errorMsgCheck: string = "";
   itemMasterTable: any = [];
   myDate: any;
   loading: boolean = false;
   submitButton: string = "Submit";
   productList: any = [];
-  addButton : string = 'Add';
+  addButton: string = 'Add';
   labour_dropdown = [
     { value: 'By Piece', actualValue: 'piece' },
     { value: 'By Weight', actualValue: 'weight' }
@@ -42,8 +42,8 @@ export class ItemMasterComponent implements OnInit {
     private fb: FormBuilder,
     private apiService: ApiService,
     private utility: AppUtility,
-    private messageService : MessageService
-  ) {}
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
     this.date = new Date();
@@ -62,7 +62,7 @@ export class ItemMasterComponent implements OnInit {
     melting: new FormControl(''),
     wastage: new FormControl(''),
     less_weight: new FormControl(''),
-    gross_weight: new FormControl(''),
+    weight: new FormControl(''),
     small_pack_quantity: new FormControl(''),
     small_pack_weight: new FormControl(''),
     box_quantity: new FormControl(''),
@@ -76,6 +76,8 @@ export class ItemMasterComponent implements OnInit {
     net_weight: new FormControl(0),
     rate: new FormControl(0),
     fine: new FormControl(0),
+    sell_labour: new FormControl(0),
+    sell_rate: new FormControl(0),
     total_labour: new FormControl(0)
   })
 
@@ -84,26 +86,29 @@ export class ItemMasterComponent implements OnInit {
       this.utility.loader(true);
       if (this.submitButton == "Submit") {
         this.apiService.postProduct(this.itemMaster.value)
-        .then((res: any) => {
-          this.utility.loader(false);
+          .then((res: any) => {
+            this.utility.loader(false);
             this.itemMaster.reset();
-            this.showToast('success' , res.message)
+            this.showToast('success', res.message)
             itemMaster.resetForm();
             this.getAllProduct();
-        }).catch((err)=>{
-          this.utility.loader(false);
-          console.log(err.error.errors.msg);
-          this.showToast('error' , err.error.errors.msg)
-        })
-      } 
-      
-      
-      else { 
+          })
+
+          .catch((err) => {
+            this.utility.loader(false);
+            console.log(err.error.errors.msg);
+            this.showToast('error', err.error.errors.msg)
+          })
+      }
+
+
+      else {
         let object = this.itemMaster.value;
-        this.apiService.putProduct(object).then((res: any) => {
-          this.utility.loader(false);
-          console.log(res.status);
-            // this.apiService.showMessage(res.message , 'success');
+        this.apiService.putProduct(object, this.editProductId)
+          .then((res: any) => {
+            this.utility.loader(false);
+            console.log(res.status);
+            this.showToast(res.message, 'success');
             this.itemMaster.reset();
             // Object.keys(this.itemMaster.controls).forEach((key)=>{
             //   console.log(key);
@@ -112,7 +117,11 @@ export class ItemMasterComponent implements OnInit {
             itemMaster.resetForm();
             this.submitButton = "Submit";
             this.getAllProduct();
-        });
+          })
+          .catch((err) => {
+            this.showToast(err.message, 'error');
+            this.utility.loader(false);
+          })
       }
     }
   }
@@ -133,30 +142,21 @@ export class ItemMasterComponent implements OnInit {
       this.productList = res.data;
       console.log(this.productList);
     })
-    .catch((err)=>{
-      this.utility.loader(false);
-    })
+      .catch((err) => {
+        this.utility.loader(false);
+      })
   }
 
   editProductId: any;
-  async onClick(string: any, index: any, product: any) {
-    console.log(product);
-    if (string == "edit") {
-      this.editProductId = product.productId;
-      this.itemMaster.patchValue(product);
-      this.submitButton = "Update";
-      window.scroll(0, 0);
-    } else {
-    }
-  }
 
-  editItem(index:any) {
+  editItem(index: any) {
+    console.log(index);
     // console.log(event);
     let data = this.productList[index];
     this.editProductId = this.productList[index].id;
     console.log(data);
     this.itemMaster.patchValue(data);
-    this.itemMaster.controls['gross_weight'].setValue(this.productList[index].weight);
+    this.itemMaster.controls['weight'].setValue(this.productList[index].weight);
     this.submitButton = 'Update';
   }
 
@@ -169,7 +169,7 @@ export class ItemMasterComponent implements OnInit {
     let product_weight = 0;
     let netWeight = 0;
     if (string == 'net weight') {
-      product_weight = form_values.gross_weight ? Number(form_values.gross_weight) : 0
+      product_weight = form_values.weight ? Number(form_values.weight) : 0
       netWeight = (product_weight) - (((Number(form_values?.box_quantity) ?? 0) * (Number(form_values?.box_weight) ?? 0)) + ((Number(form_values?.small_pack_quantity) ?? 0) * (Number(form_values?.small_pack_weight) ?? 0)) + ((Number(form_values?.big_pack_quantity) ?? 0) * (Number(form_values?.big_pack_weight) ?? 0)))
       this.itemMaster.controls['net_weight'].setValue(netWeight == 0 ? 0 : netWeight)
       return netWeight == 0 ? 'Net Weight' : netWeight;
@@ -183,7 +183,7 @@ export class ItemMasterComponent implements OnInit {
 
     else if (string == 'total_labour') {
       if (form_values.labour_by == 'weight') {
-        this.itemMaster.controls['total_labour'].setValue(Number(form_values.gross_weight) * Number(form_values.labour));
+        this.itemMaster.controls['total_labour'].setValue(Number(form_values.weight) * Number(form_values.labour));
       }
 
       else {
@@ -211,7 +211,7 @@ export class ItemMasterComponent implements OnInit {
   }
 
   filterval = ''
-  reset(dt1:any) {
+  reset(dt1: any) {
     dt1.reset();
     this.filterval = '';
   }

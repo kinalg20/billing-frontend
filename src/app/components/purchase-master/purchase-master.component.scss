@@ -116,7 +116,7 @@
 }
 
 .purchasingForm table td {
-    padding: 10px 5px;
+    padding: 11px 5px 10px;
 }
 
 
@@ -171,11 +171,26 @@
         border-radius: 0;
     }
 
-    .main-fields .p-inputtext{
-        height: 10px;
+    .purchasing-table .p-inputtext{
+        height: 20px;
     }
 
     .labour-select{
         width: 100px;
     }
+
+    .main-fields .p-inputtext{
+        height: 35px;
+    }
+
+    .main-fields .p-button.p-button-icon-only{
+        height: 35px;
+        background: #fb9678;
+        border: 1px solid #fb9678;
+    }
+
+    .p-calendar{
+        width: 100%;
+    }
+
 }
