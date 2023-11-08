@@ -161,9 +161,9 @@ export class PurchaseMasterComponent implements OnInit {
         this.route.navigateByUrl('/purchase-listing');
       })
 
-        .catch((error: HttpErrorResponse) => {
+        .catch((error) => {
           this.utility.loader(false);
-          this.showToast('error', error.message)
+          this.showToast('error', error.errors.msg);
         })
     }
     else {

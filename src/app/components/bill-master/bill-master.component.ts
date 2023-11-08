@@ -116,7 +116,7 @@ export class BillMasterComponent implements OnInit {
         })
         .catch((err) => {
           this.utility.loader(false);
-          this.showToast('error', err.message);
+          this.showToast('error', err.errors.msg);
         })
     } else {
       this.showToast('error', 'please fill required fields')
