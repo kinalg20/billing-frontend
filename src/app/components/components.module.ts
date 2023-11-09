@@ -18,6 +18,7 @@ import { PurchaseListingComponent } from './purchase-listing/purchase-listing.co
 import { TableModule } from 'primeng/table';
 import { RouterModule } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
+import { ReportsComponent } from './reports/reports.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
     BillMasterComponent,
     BillListingComponent,
     PurchaseListingComponent,
+    ReportsComponent,
   ],
   imports: [
     CommonModule,

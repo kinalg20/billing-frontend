@@ -70,4 +70,8 @@ export class ApiService {
     return this.http.get(this._baseUrl + `/shop-name`).toPromise();
   }
 
+  postReport(object:any){
+    return this.http.post(this._baseUrl + `/reports` , object).toPromise();
+  }
+
 }

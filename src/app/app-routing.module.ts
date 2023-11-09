@@ -10,6 +10,7 @@ import { BillMasterComponent } from './components/bill-master/bill-master.compon
 import { BillListingComponent } from './components/bill-listing/bill-listing.component';
 import { PurchaseListingComponent } from './components/purchase-listing/purchase-listing.component';
 import { ProductComponent } from './dashboard/dashboard-components/product/product.component';
+import { ReportsComponent } from './components/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: "purchase-master", component: PurchaseMasterComponent },
       { path: "purchase-listing", component: PurchaseListingComponent },
       { path: "bill-listing", component: BillListingComponent },
+      { path: "reports", component: ReportsComponent }
     ]
   },
 

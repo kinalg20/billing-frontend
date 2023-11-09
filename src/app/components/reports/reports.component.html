@@ -1,0 +1,34 @@
+<!-- Start Main Content Wrapper Area -->
+<div class="main-content d-flex flex-column">
+
+    <!-- Breadcrumb Area -->
+    <div class="breadcrumb-area" *ngFor="let Content of breadcrumb;">
+        <h3>{{Content.title}}</h3>
+    </div>
+
+    <div class="add-listings-box1 reportMaster">
+        <form class="purchasing-table-form" [formGroup]="reports" (ngSubmit)="reportSubmit()">
+            <div class="row main-fields">
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>Customer Name <span style="color: red;">*</span></label><br>
+                    <p-dropdown formControlName="name" [options]="customerDropdown" appendTo="body" optionLabel="name"
+                        optionValue="bill_no"></p-dropdown>
+                </div>
+
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>Year<span style="color: red;">*</span></label><br>
+                    <p-calendar formControlName="year" placeholder="year" [maxDate]="date" [showIcon]="true" view="year"
+                        dateFormat="yy"></p-calendar>
+                </div>
+
+                <div class="col-lg-3 col-md-12 form-group">
+                    <label>Month<span style="color: red;">*</span></label><br>
+                    <p-calendar formControlName="month" placeholder="month" [showIcon]="true" view="month" dateFormat="MM"></p-calendar>
+                </div>
+                <div class="col-lg-3 col-md-12 form-group">
+                    <button type="submit" class="submit_btn">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
