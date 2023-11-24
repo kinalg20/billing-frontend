@@ -120,7 +120,7 @@
 }
 
 
-@media(max-width : 1440px){
+@media(max-width : 1440px) {
     .purchasingForm table th {
         padding: 5px;
         white-space: nowrap;
@@ -171,26 +171,41 @@
         border-radius: 0;
     }
 
-    .purchasing-table .p-inputtext{
+    .purchasing-table .p-inputtext {
         height: 20px;
     }
 
-    .labour-select{
+    .labour-select {
         width: 100px;
     }
 
-    .main-fields .p-inputtext{
+    .main-fields .p-inputtext {
         height: 35px;
     }
 
-    .main-fields .p-button.p-button-icon-only{
+    .main-fields .p-button.p-button-icon-only {
         height: 35px;
         background: #fb9678;
         border: 1px solid #fb9678;
     }
 
-    .p-calendar{
+    .p-calendar {
         width: 100%;
     }
 
+    .p-autocomplete {
+        width: 100%;
+    }
+
+    .purchasing-table .p-autocomplete-dd .p-autocomplete-dropdown {
+        border: none;
+        color: #000;
+        background: transparent;
+        width: 1rem;
+        padding: 0;
+    }
+
+    .p-autocomplete-item{
+        padding: 0.25rem 1rem!important;
+    }
 }

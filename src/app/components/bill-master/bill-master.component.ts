@@ -42,6 +42,7 @@ export class BillMasterComponent implements OnInit {
     this.getAllProduct();
     this.addProductRow('add', '', 20);
     this.getShopName();
+    this.getLastBill();
     this.showCustomerDropdown();
   }
 
@@ -77,7 +78,6 @@ export class BillMasterComponent implements OnInit {
 
   itemMasterSubmit() {
     this.itemMaster.markAllAsTouched();
-    console.log(this.itemMaster.controls);
     typeof (this.itemMaster.value['name']) == 'string' ? this.itemMaster.value['name'] : this.itemMaster.controls['name'].get('bill_no')
     if (this.itemMaster.valid) {
       this.utility.loader(true);
@@ -85,8 +85,18 @@ export class BillMasterComponent implements OnInit {
       let products: any = [];
       this.getProductArray().value.forEach((res: any) => {
         if (res.product_id) {
-          products.push(res);
-          res.gold_rate = this.itemMaster.value.gold_rate
+          let object = Object.assign({}, res);
+          let productId = typeof res.product_id == 'string' ? res.product_id : res.product_id['id']
+
+          if (!Number(productId)) {
+            object['product_name'] = productId;
+            delete object['product_id'];
+          }
+          else{
+            object['product_id'] = productId
+          }
+          products.push(object);
+          object.gold_rate = this.itemMaster.value.gold_rate
         }
       })
 
@@ -129,13 +139,14 @@ export class BillMasterComponent implements OnInit {
 
   getTotalStock: any = 0;
   getTotalFine: any = 0;
-
+  product_listing: any = [];
   billsList: any = [];
   async getAllProduct() {
     this.utility.loader(true);
     await this.apiService.getAllProductList().then((res: any) => {
       this.utility.loader(false);
       this.products = res.data;
+      this.product_listing = res.data;
       console.log(this.products);
     });
   }
@@ -145,20 +156,19 @@ export class BillMasterComponent implements OnInit {
     this.product_controls = this.getProductArray();
     let product_weight = 0;
     let netWeight = 0;
-    if (string == 'net weight') {
+    debugger;
+    if (string == 'net weight' || string == '') {
       product_weight = this.product_list[index].gross_weight ? Number(this.product_list[index].gross_weight) : 0
       netWeight = (product_weight) - (((Number(this.product_list[index]?.box_quantity) ?? 0) * (Number(this.product_list[index]?.box_weight) ?? 0)) + ((Number(this.product_list[index]?.small_pack_quantity) ?? 0) * (Number(this.product_list[index]?.small_pack_weight) ?? 0)) + ((Number(this.product_list[index]?.big_pack_quantity) ?? 0) * (Number(this.product_list[index]?.big_pack_weight) ?? 0)))
       this.product_controls.controls[index].controls['weight'].setValue(netWeight == 0 ? 0 : netWeight)
-      return netWeight == 0 ? '0' : netWeight;
     }
 
-    else if (string == 'fine') {
+    if (string == 'fine' || string == '') {
       let fine = (Number(this.product_list[index].weight) * Number(this.product_list[index].rate)) / 100;
       this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
-      return fine == 0 ? '0' : fine;
     }
 
-    else if (string == 'total_labour') {
+    if (string == 'total_labour' || string == '') {
       if (this.product_list[index].labour_by == 'weight') {
         this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].gross_weight) * Number(this.product_list[index].labour));
       }
@@ -166,23 +176,21 @@ export class BillMasterComponent implements OnInit {
       else {
         this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].piece_quantity) * Number(this.product_list[index].labour));
       }
-
-      return this.product_controls.controls[index].controls['total_labour'].value == 0 ? '0' : this.product_controls.controls[index].controls['total_labour'].value;
     }
 
-    else {
+    if (string == '') {
       let value = Number(this.product_list[index].melting) + Number(this.product_list[index].wastage);
       this.product_controls.controls[index].controls['rate'].setValue(value == 0 ? 0 : value);
-      return value == 0 ? '0' : value;
     }
   }
 
   customerDropdown: any = [];
   showCustomerList: any = [];
   shopDataList: any = [];
-  showCustomerDropdown() {
-    this.apiService.getCustomer().then((res: any) => {
-      this.customerDropdown = res['data'] ?? [];
+  async showCustomerDropdown() {
+    await this.apiService.getCustomer().then((res: any) => {
+      debugger;
+      this.customerDropdown = res['data'];
     }).catch((err: any) => {
       this.customerDropdown = [];
     })
@@ -264,16 +272,16 @@ export class BillMasterComponent implements OnInit {
           wastage: new FormControl(''),
           less_weight: new FormControl(''),
           gross_weight: new FormControl(''),
-          small_pack_quantity: new FormControl(''),
-          small_pack_weight: new FormControl(''),
-          box_quantity: new FormControl(''),
-          box_weight: new FormControl(''),
-          big_pack_quantity: new FormControl(''),
-          big_pack_weight: new FormControl(''),
-          labour: new FormControl(''),
+          small_pack_quantity: new FormControl('0'),
+          small_pack_weight: new FormControl('0'),
+          box_quantity: new FormControl('0'),
+          box_weight: new FormControl('0'),
+          big_pack_quantity: new FormControl('0'),
+          big_pack_weight: new FormControl('0'),
+          labour: new FormControl('0'),
           labour_by: new FormControl('weight'),
-          piece_quantity: new FormControl(''),
-          weight: new FormControl(''),
+          piece_quantity: new FormControl('0'),
+          weight: new FormControl(0),
           rate: new FormControl(0),
           fine: new FormControl(0),
           total_labour: new FormControl(0)
@@ -288,35 +296,97 @@ export class BillMasterComponent implements OnInit {
 
 
   setFieldValues(string: any, index?: any) {
-    debugger;
-    let apiSuccess : boolean = false;
-    if (this.itemMaster.controls['shop_name'].value && this.getProductArray().value[index].product_id) {
-      let name : any = this.itemMaster.value.shop_name
-      let object = {
-        bill_no: typeof name == 'string' ? name : name['shop_name'],
-        product_id: this.getProductArray().value[index].product_id
+    if (string != 'shop') {
+      if (this.itemMaster.controls['shop_name'].value && this.getProductArray().value[index].product_id) {
+        debugger;
+        let name: any = this.itemMaster.value.shop_name;
+        let productId: any = this.getProductArray().value[index].product_id;
+        let object = {
+          bill_no: typeof name == 'string' ? name : name['shop_name'],
+          product_id: productId == 'string' ? productId : productId['id']
+        }
+
+        debugger;
+        if(Number(object.product_id)){
+          this.getCustomerByShopProduct(object, index);
+        }
+        else{
+          this.setControls(index , {})
+        }
       }
-      this.apiService.getDataByCustomerNameProductId(object)
-        .then((res: any) => {
-          apiSuccess = true;
-          this.getProductArray().value[index].patchValue(res.data[0]);
-        })
-        .catch((err: any) => {
-        })
+
     }
 
-    if(!apiSuccess && this.getProductArray().value[index].product_id){
-      this.apiService.getProductById(this.getProductArray().value[index].product_id).then((res:any)=>{
-          console.log(res.data);
-          let data = res.data;
-          this.product_controls = this.getProductArray();
-          this.product_controls.controls[index].controls['melting'].setValue(data.melting);
+    else {
+      if (this.itemMaster.controls['shop_name'].value) {
+        this.product_controls = this.getProductArray();
+        this.getProductArray().value.forEach((res: any , index:any) => {
+          debugger;
+          if (res.product_id) {
+            let name: any = this.itemMaster.value.shop_name
+            let productId: any = this.getProductArray().value[index].product_id;
+
+            let object = {
+              bill_no: typeof name == 'string' ? name : name['shop_name'],
+              product_id: productId == 'string' ? productId : productId['id']
+            }
+            this.getCustomerByShopProduct(object, index);
+          }
+        })
+      }
+    }
+
+  }
+
+
+  setControls(index: any, data: any) {
+    this.product_controls.controls[index].controls['gross_weight'].setValue(data.gross_weight);
+    this.product_controls.controls[index].controls['melting'].setValue(Number(data.melting ? data.melting : 0));
+    this.product_controls.controls[index].controls['wastage'].setValue(data.wastage ? data.wastage : 0);
+    this.product_controls.controls[index].controls['small_pack_weight'].setValue(data.small_pack_weight ? data.small_pack_weight : 0);
+    this.product_controls.controls[index].controls['small_pack_quantity'].setValue(data.small_pack_quantity ? data.small_pack_quantity : 0);
+    this.product_controls.controls[index].controls['big_pack_weight'].setValue(data.big_pack_weight ? data.big_pack_weight : 0);
+    this.product_controls.controls[index].controls['big_pack_quantity'].setValue(data.big_pack_quantity ? data.big_pack_quantity : 0);
+    this.product_controls.controls[index].controls['box_weight'].setValue(data.box_weight ? data.box_weight : 0);
+    this.product_controls.controls[index].controls['box_quantity'].setValue(data.box_quantity  ? data.box_quantity : 0);
+    this.product_controls.controls[index].controls['labour_by'].setValue(data.labour_by ?? 'weight');
+    this.product_controls.controls[index].controls['labour'].setValue(data.labour ? data.labour  : 0);
+    this.product_controls.controls[index].controls['total_labour'].setValue(data.total_labour ? data.total_labour : 0);
+    this.product_controls.controls[index].controls['piece_quantity'].setValue(data.piece_quantity ? data.piece_quantity : 0);
+    this.product_controls.controls[index].controls['weight'].setValue(data.weight ? data.weight : 0);
+    this.product_controls.controls[index].controls['rate'].setValue(data.rate ? data.rate : 0);
+    this.product_controls.controls[index].controls['fine'].setValue(data.fine ? data.fine : 0);
+  }
+
+
+  customerData: any = [];
+  getCustomerByShopProduct(object: any, index: any,) {
+    this.product_controls = this.getProductArray();
+    this.apiService.getDataByCustomerNameProductId(object)
+      .then((res: any) => {
+        this.customerData = res.data;
+        this.setControls(index, res.data[0])
       })
       .catch((err: any) => {
+        this.getProductById(object, index)
       })
-    }
-    
   }
+
+
+  getProductById(object: any, index: any) {
+    this.apiService.getProductById(object.product_id).then((res: any) => {
+      let data = res.data;
+      let data1 = {
+        melting : data.melting
+      }
+      this.setControls(index, data1)
+      // this.product_controls.controls[index].controls['melting'].setValue(data.melting)
+    })
+      .catch((err: any) => {
+      })
+  }
+
+
 
   shopList: any = [];
   getShopName() {
@@ -331,7 +401,7 @@ export class BillMasterComponent implements OnInit {
     this.shopDataList = this.shopList;
   }
 
-  filterShop(event: any, dropdown: any, key: any) {
+  filterShop(event: any, key: any) {
     var filtered: any[] = [];
     let query = event.query;
     if (key == 'shop_name') {
@@ -343,13 +413,53 @@ export class BillMasterComponent implements OnInit {
 
       this.shopDataList = filtered;
     }
+
+    else if (key == 'name') {
+      for (let i = 0; i < this.products.length; i++) {
+        if (this.products[i][key].toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtered.push(this.products[i]);
+        }
+      }
+
+      this.product_listing = filtered;
+    }
+
     else {
+      debugger;
       for (let i = 0; i < this.customerDropdown.length; i++) {
-        if (this.customerDropdown[i][key].toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        if (this.customerDropdown[i]['name'].toLowerCase().indexOf(query.toLowerCase()) == 0) {
           filtered.push(this.customerDropdown[i]);
         }
       }
       this.showCustomerList = filtered;
+    }
+  }
+
+  async getLastBill() {
+    debugger;
+    let bill_no = '';
+    await this.apiService.getLastBill()
+      .then((res: any) => {
+        let val = res.data.bill_no.split('_')[1];
+        bill_no = 'SJ_' + (Number(val) ? (Number(val) + 1) : 1);
+      })
+      .catch((err: any) => {
+        bill_no = 'SJ_' + 1;
+      })
+
+    this.itemMaster.controls['bill_no'].setValue(bill_no);
+  }
+
+  checkTotal(event: any, index: any) {
+    this.product_controls = this.getProductArray()
+    let labour_by = event.target.value;
+    var total_labour = 0;
+    if (labour_by == 'weight') {
+      this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].gross_weight) * Number(this.product_list[index].labour));
+    }
+
+    else {
+      this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].piece_quantity) * Number(this.product_list[index].labour));
     }
   }
 }

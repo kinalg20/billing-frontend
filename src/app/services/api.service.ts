@@ -58,7 +58,6 @@ export class ApiService {
   }
 
   getDataByCustomerNameProductId(object: any) {
-    debugger;
     return this.http.get(this._baseUrl + `customers/${object.bill_no}/${object.product_id}`).toPromise();
   }
 
@@ -67,11 +66,20 @@ export class ApiService {
   }
 
   getShopName() {
-    return this.http.get(this._baseUrl + `/shop-name`).toPromise();
+    return this.http.get(this._baseUrl + `shop-name`).toPromise();
   }
-
+  
+  getPurchaseShop(){
+    return this.http.get(this._baseUrl + `purchasing-shop-name`).toPromise();
+    
+  }
+  
   postReport(object:any){
-    return this.http.post(this._baseUrl + `/reports` , object).toPromise();
+    return this.http.post(this._baseUrl + `reports` , object).toPromise();
+  }
+  
+  getLastBill(){
+    return this.http.get(this._baseUrl + `last-bill`).toPromise();
   }
 
 }

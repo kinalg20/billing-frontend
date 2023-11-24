@@ -31,6 +31,7 @@
                 <th>City</th>
                 <th>Aadhar</th>
                 <th>PAN</th>
+                <th>Invoice</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-expanded="expanded" let-ri="rowIndex">
@@ -50,6 +51,8 @@
                 <td>{{product.city}}</td>
                 <td>{{product.aadhar ? product.aadhar : '-'}}</td>
                 <td>{{product.pan ? product.pan : '-'}}</td>
+                <td style="text-align: center; cursor: pointer;"><i class="pi pi-download"></i>
+                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-product>
@@ -88,8 +91,8 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-items  let-ri="rowIndex">
                                 <tr class="rowExpand">
-                                    <td></td>
-                                    <td>{{ri + 1}}</td>
+                                    <td style="width: 5rem"></td>
+                                    <td style="padding: 0.3rem 1.2rem!important;">{{ri + 1}}</td>
                                     <td>
                                         <ng-container *ngFor="let productname of productList;">
                                             <span *ngIf="productname.id == items.product_id">{{productname.name}}</span>
@@ -105,11 +108,11 @@
                                     <td>{{items.box_weight ? items.box_weight : 0}}</td>
                                     <td>{{items.box_quantity ? items.box_quantity : 0}}</td>
                                     <td>{{items.labour}}</td>
-                                    <td>{{items.labour_by}}</td>
-                                    <td>{{items.piece_quantity ? items.piece_quantity : 0}}</td>
+                                    <td>{{items.labour_by != 'weight' ? 'By Qty' : 'By Weight'}}</td>
                                     <td>{{items.total_labour}}</td>
+                                    <td>{{items.piece_quantity ? items.piece_quantity : 0}}</td>
                                     <td>{{items.gold_rate}}</td>
-                                    <td>{{items.net_weight}}</td>
+                                    <td>{{items.weight}}</td>
                                     <td>{{items.rate}}</td>
                                     <td>{{items.fine}}</td>
                                 </tr>

@@ -55,11 +55,11 @@ export class FullComponent {
       icon: "disc",
       menu: "Purchase List",
     },
-    // {
-    //   link: "/forms",
-    //   icon: "layout",
-    //   menu: "Forms",
-    // },
+    {
+      link: "/reports",
+      icon: "layout",
+      menu: "Report",
+    },
     // {
     //   link: "/alerts",
     //   icon: "info",

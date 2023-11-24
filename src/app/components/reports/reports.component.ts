@@ -43,12 +43,19 @@ export class ReportsComponent implements OnInit {
   }
 
   reportSubmit(){
-    let object = {
+    let object : any = {
       name : this.reports.value.name,
       year : this.reports.value.year ? moment(this.reports.value.year).format('yyyy') : null,
       month : this.reports.value.month ? moment(this.reports.value.month).format('MM') : null
     }
-    this.apiService.postReport(object).then((res:any)=>{
+
+    let object1 : any = {};
+    Object.keys(object).forEach((res:any)=>{
+      if(object[res]){
+        object1[res] = object[res];
+      }
+    })
+    this.apiService.postReport(object1).then((res:any)=>{
       console.log(res);
     })
   }

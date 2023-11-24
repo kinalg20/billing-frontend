@@ -15,7 +15,7 @@
 
     .p-datatable .p-datatable-thead > tr > th , .p-datatable .p-datatable-tbody > tr > td{
         font-size: 15px;
-        padding: 0.3rem 0.5rem;
+        padding: 0.3rem 1.2rem;
     }
 
     .p-datatable-wrapper {
@@ -44,7 +44,7 @@
         padding: 10px!important;
     }
 
-    tr td button{
+    .bill-list tr td button{
         padding: 0!important;
         height: 2rem!important;
     }

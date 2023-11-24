@@ -12,20 +12,24 @@
         <form class="purchasing-table-form" [formGroup]="purchasingForm" (ngSubmit)="submitApi(formRef)"
             #formRef="ngForm">
             <div class="row main-fields">
-                <div class="col-lg-3 col-md-12 form-group">
-                    <label for="">Shop Name</label>
-                    <input type="text" class="form-control" formControlName="shop_name" placeholder="Shop Name"
-                        [class.is-invalid]="(formRef.submitted &&
-                        purchasingForm.get('shop_name')?.invalid) ||
-                        (purchasingForm.get('shop_name')?.touched &&
-                        purchasingForm.get('shop_name')?.invalid)" required>
-                    <div class="invalid-feedback"> Shop Name is Required</div>
+                <div class="col-lg-3 col-md-12 form-group shop-div">
+                    <label>Shop Name</label><br>
+                    <p-autoComplete formControlName="shop_name" [suggestions]="shopDataList" placeholder="Select Shop"
+                        (completeMethod)="filterShop($event , 'shop_name')" field="shop_name" [dropdown]="true">
+                        <ng-template let-country pTemplate="item">
+                            <div class="country-item">
+                                <div>{{country.shop_name}}</div>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                    <div class="invalid-feedback"> Shop Name is Required </div>
                 </div>
+
                 <div class="col-lg-3 col-md-12 form-group">
                     <label>Bill No <span style="color: red;">*</span></label>
                     <input class="form-control" [class.is-invalid]="(purchasingForm.get('bill_no')?.touched &&
-                purchasingForm.get('bill_no')?.invalid)" type="text" formControlName="bill_no" placeholder="Enter Bill No"
-                        required>
+                purchasingForm.get('bill_no')?.invalid)" type="text" formControlName="bill_no"
+                        placeholder="Enter Bill No" required>
                     <div class="invalid-feedback"> Bill No is Required </div>
                 </div>
                 <div class="col-lg-3 col-md-12 form-group">
@@ -74,44 +78,52 @@
                             <tr [formGroupName]="index">
                                 <td style="text-align: center;">{{index+1}}</td>
                                 <td style="min-width: 100px;">
-                                    <p-dropdown formControlName="product_id" (onChange)="setProductMelting(index)"  [options]="products" appendTo="body" optionLabel="name" optionValue="id" [editable]="true"></p-dropdown>
+                                    <p-autoComplete formControlName="product_id" [suggestions]="product_listing"
+                                        placeholder="Product" appendTo="body" (onSelect)="setProductMelting(index)" (input)="setProductMelting(index)"
+                                        (completeMethod)="filterShop($event, 'name')" field="name" [dropdown]="true">
+                                        <ng-template let-country pTemplate="item">
+                                            <div class="country-item">
+                                                <div>{{country.name}}</div>
+                                            </div>
+                                        </ng-template>
+                                    </p-autoComplete>
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="gross_weight">
+                                        formControlName="gross_weight" (keydown)="getNetWeight('' , index)">
                                 </td>
                                 <td>
-                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="melting">
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="melting" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
-                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="wastage">
-                                </td>
-                                <td>
-                                    <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="small_pack_weight">
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="wastage" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="small_pack_quantity">
+                                        formControlName="small_pack_weight" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="big_pack_weight">
+                                        formControlName="small_pack_quantity" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="big_pack_quantity">
+                                        formControlName="big_pack_weight" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="box_weight">
+                                        formControlName="big_pack_quantity" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="box_quantity">
+                                        formControlName="box_weight" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
-                                    <select formControlName="labour_by" class="form-control form-select labour-select">
+                                    <input type="text" pKeyFilter="num" class="form-control"
+                                        formControlName="box_quantity" (input)="getNetWeight('' , index)">
+                                </td>
+                                <td>
+                                    <select formControlName="labour_by" class="form-control form-select labour-select" (change)="checkTotal($event , index)">
                                         <option value="" disabled>Labour By</option>
                                         <ng-container *ngFor="let value of labour_dropdown">
                                             <option [value]="value.actualValue">{{value.value}}</option>
@@ -119,25 +131,25 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="labour">
+                                    <input type="text" pKeyFilter="num" class="form-control" formControlName="labour" (input)="getNetWeight('' , index)">
                                 </td>
                                 <td>
                                     <span
-                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('total_labour'
-                                        , index)}}</span>
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getProductArray().value[index]['total_labour']}}</span>
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"
-                                        formControlName="piece_quantity">
+                                        formControlName="piece_quantity" (input)="getNetWeight('' , index)">
                                 </td>
-                                <td><span style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('net
-                                        weight' , index)}}</span></td>
                                 <td><span
-                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('rate'
-                                        , index)}}</span></td>
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getProductArray().value[index]['weight']}}</span>
+                                </td>
                                 <td><span
-                                        style="border-bottom: 1px solid #dedede; display: block;">{{getNetWeight('fine'
-                                        , index)}}</span></td>
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getProductArray().value[index]['rate']}}</span>
+                                </td>
+                                <td><span
+                                        style="border-bottom: 1px solid #dedede; display: block;">{{getProductArray().value[index]['fine']}}</span>
+                                </td>
                                 <td style="text-align: center; cursor: pointer;" *ngIf="last"
                                     (click)="addProductRow('add')">
                                     <span>+</span>
@@ -152,7 +164,7 @@
                 </table>
             </div>
 
-            
+
             <div class="add-listings-btn mt-1">
                 <div style="margin: 10px 0; float: right;width: 29.2%;">
                     <table class="table-bordered" style="border-color: #dedede;width: 100%;">
@@ -166,7 +178,8 @@
                         <tbody>
                             <tr>
                                 <td>{{getAmount('total_fine')}}</td>
-                                <td><input type="number" min="0" class="form-control" formControlName="gold_rate" placeholder="Gold Rate"></td>
+                                <td><input type="number" min="0" class="form-control" formControlName="gold_rate"
+                                        placeholder="Gold Rate"></td>
                                 <td>{{getAmount('payment')}}</td>
                             </tr>
                         </tbody>

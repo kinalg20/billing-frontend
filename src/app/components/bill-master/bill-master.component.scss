@@ -107,6 +107,22 @@
     .itemMaster .labour-select{
         width: 100px;
     }
+
+    .item-table .p-autocomplete-dd .p-autocomplete-dropdown {
+        border: none;
+        color: #000;
+        background: transparent;
+        width: 1rem;
+        padding: 0;
+    }
+
+    .item-table .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
+        padding: 0.25rem 1rem!important;
+    }
+
+    .p-autocomplete-item{
+        padding: 0.25rem 1rem!important;
+    }
 }
 
 
