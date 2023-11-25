@@ -97,16 +97,15 @@ export class PurchaseMasterComponent implements OnInit {
   product_list: any = [];
   product_controls: any = [];
   getNetWeight(string: any, index: any) {
+    debugger;
     this.product_list = this.purchasingForm.controls['productList'].value ?? [];
     this.product_controls = this.getProductArray();
-
     let product_weight = 0;
     let netWeight = 0;
     if (string == 'net weight' || string == '') {
       product_weight = this.product_list[index].gross_weight ? Number(this.product_list[index].gross_weight) : 0
       netWeight = (product_weight) - (((Number(this.product_list[index]?.box_quantity) ?? 0) * (Number(this.product_list[index]?.box_weight) ?? 0)) + ((Number(this.product_list[index]?.small_pack_quantity) ?? 0) * (Number(this.product_list[index]?.small_pack_weight) ?? 0)) + ((Number(this.product_list[index]?.big_pack_quantity) ?? 0) * (Number(this.product_list[index]?.big_pack_weight) ?? 0)))
       this.product_controls.controls[index].controls['weight'].setValue(netWeight == 0 ? 0 : netWeight)
-      // return netWeight == 0 ? '0' : netWeight;
     }
 
     if (string == 'total_labour' || string == '') {
@@ -118,20 +117,17 @@ export class PurchaseMasterComponent implements OnInit {
         this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].piece_quantity) * Number(this.product_list[index].labour));
       }
 
-      // return this.product_controls.controls[index].controls['total_labour'].value == 0 ? '0' : this.product_controls.controls[index].controls['total_labour'].value;
     }
 
     if(string == '') {
       let value = Number(this.product_list[index].melting) + Number(this.product_list[index].wastage);
       this.product_controls.controls[index].controls['rate'].setValue(value == 0 ? 0 : value);
-      // return value == 0 ? '0' : value;
     }
 
-    if (string == 'fine' || string == '') {
-      let fine = (Number(this.product_list[index].weight) * Number(this.product_list[index].rate)) / 100;
-      this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
-      // return fine == 0 ? '0' : fine;
-    }
+      if (string == 'fine' || string == '') {
+        let fine = (Number(this.product_controls.controls[index].controls['weight'].value) * Number(this.product_controls.controls[index].controls['rate'].value)) / 100;
+        this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
+      }
   }
 
   totalRows: any = [];
