@@ -163,24 +163,25 @@ export class BillMasterComponent implements OnInit {
       this.product_controls.controls[index].controls['weight'].setValue(netWeight == 0 ? 0 : netWeight)
     }
 
-    if (string == 'fine' || string == '') {
-      let fine = (Number(this.product_list[index].weight) * Number(this.product_list[index].rate)) / 100;
-      this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
-    }
-
+    
     if (string == 'total_labour' || string == '') {
       if (this.product_list[index].labour_by == 'weight') {
         this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].gross_weight) * Number(this.product_list[index].labour));
       }
-
+      
       else {
         this.product_controls.controls[index].controls['total_labour'].setValue(Number(this.product_list[index].piece_quantity) * Number(this.product_list[index].labour));
       }
     }
-
+    
     if (string == '') {
       let value = Number(this.product_list[index].melting) + Number(this.product_list[index].wastage);
       this.product_controls.controls[index].controls['rate'].setValue(value == 0 ? 0 : value);
+    }
+    
+    if (string == 'fine' || string == '') {
+      let fine = (Number(this.product_controls.controls[index].controls['weight'].value) * Number(this.product_controls.controls[index].controls['rate'].value)) / 100;
+      this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
     }
   }
 

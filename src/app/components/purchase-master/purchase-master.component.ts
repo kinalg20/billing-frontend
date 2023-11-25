@@ -124,10 +124,10 @@ export class PurchaseMasterComponent implements OnInit {
       this.product_controls.controls[index].controls['rate'].setValue(value == 0 ? 0 : value);
     }
 
-      if (string == 'fine' || string == '') {
-        let fine = (Number(this.product_controls.controls[index].controls['weight'].value) * Number(this.product_controls.controls[index].controls['rate'].value)) / 100;
-        this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
-      }
+    if (string == 'fine' || string == '') {
+      let fine = (Number(this.product_controls.controls[index].controls['weight'].value) * Number(this.product_controls.controls[index].controls['rate'].value)) / 100;
+      this.product_controls.controls[index].controls['fine'].setValue(fine ?? 0)
+    }
   }
 
   totalRows: any = [];
