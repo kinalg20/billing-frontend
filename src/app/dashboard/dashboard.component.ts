@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  total_sales : any = {};
+  constructor(private apiService : ApiService) { }
 
   ngOnInit(): void {
+    this.getSales();
+  }
+
+  getSales(){
+    this.apiService.getSales().then((res:any)=>{
+      this.total_sales = res.data;  
+    })
   }
 
 }

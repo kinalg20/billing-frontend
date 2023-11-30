@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
+import { AppUtility } from 'src/app/apputitlity';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -11,9 +12,9 @@ import { ApiService } from 'src/app/services/api.service';
 export class ReportsComponent implements OnInit {
   customerDropdown: any[] = [];
 
-  constructor(private Fb : FormBuilder , private apiService : ApiService) { }
+  constructor(private Fb: FormBuilder, private apiService: ApiService, private loader: AppUtility) { }
 
-  date : any;
+  date: any;
   ngOnInit(): void {
     this.date = new Date();
     this.showCustomerDropdown();
@@ -28,35 +29,42 @@ export class ReportsComponent implements OnInit {
 
 
   reports = this.Fb.group({
-    year : [''],
-    month : [''],
-    name : ['']
+    year: [''],
+    month: [''],
+    name: ['']
   })
 
   showCustomerDropdown() {
     this.apiService.getCustomer().then((res: any) => {
-      res['data'].push({name : 'Select Customer' , bill_no : ''})
+      res['data'].push({ name: 'Select Customer', bill_no: '' })
       this.customerDropdown = res['data'] ?? [];
     }).catch((err: any) => {
       this.customerDropdown = [];
     })
   }
 
-  reportSubmit(){
-    let object : any = {
-      name : this.reports.value.name,
-      year : this.reports.value.year ? moment(this.reports.value.year).format('yyyy') : null,
-      month : this.reports.value.month ? moment(this.reports.value.month).format('MM') : null
+  reportSubmit() {
+    let object: any = {
+      name: this.reports.value.name,
+      year: this.reports.value.year ? moment(this.reports.value.year).format('yyyy') : null,
+      month: this.reports.value.month ? moment(this.reports.value.month).format('MM') : null
     }
 
-    let object1 : any = {};
-    Object.keys(object).forEach((res:any)=>{
-      if(object[res]){
+    this.loader.loader(true);
+    let object1: any = {};
+    Object.keys(object).forEach((res: any) => {
+      if (object[res]) {
         object1[res] = object[res];
       }
     })
-    this.apiService.postReport(object1).then((res:any)=>{
-      console.log(res);
+    this.apiService.postReport(object1)
+    .then((res: any) => {
+      this.apiService.exportExcel(res.data)
+      this.loader.loader(false);
+      this.reports.reset();
+    })
+    .catch((err:any)=>{
+      this.loader.loader(false);
     })
   }
 

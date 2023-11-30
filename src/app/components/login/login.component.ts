@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   })
 
   ngOnInit() {
+
   }
 
   postLogin() {
@@ -30,11 +31,13 @@ export class LoginComponent implements OnInit {
           let data: any = res;
           localStorage.setItem('billing_token', JSON.stringify(data));
           this.showToast('success' , data.message)
+          this.utility.loader(false);
           this.route.navigateByUrl('/');
         })
 
         .catch((err) => {
           console.log(err);
+          this.utility.loader(false);
           this.showToast('error' , err.message)
         })
     }

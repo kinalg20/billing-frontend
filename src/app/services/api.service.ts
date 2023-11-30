@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
+import * as XLSX from "xlsx";
+import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -81,5 +83,31 @@ export class ApiService {
   getLastBill(){
     return this.http.get(this._baseUrl + `last-bill`).toPromise();
   }
+  
+  getInvoice(bill_id : any){
+    return this.http.get(this._baseUrl + `/invoices/${bill_id}`).toPromise();
+  }
+  
+  getSales(){
+    return this.http.get(this._baseUrl + `/sales`).toPromise();
+  }
 
+  exportExcel(productList: any) {
+    console.log(productList);
+    import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(productList);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "customer_report");
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
 }

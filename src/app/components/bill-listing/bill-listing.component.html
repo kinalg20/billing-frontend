@@ -44,14 +44,14 @@
                 <td>{{ri + 1}}</td>
                 <td>{{product.bill_no}}</td>
                 <td style="min-width: 150px;">{{product.bill_date | date}}</td>
-                <td>{{product.name}}</td>
+                <td>{{product.name ? product.name : '-'}}</td>
                 <td>{{product.father_name}}</td>
                 <td>{{product.mobile}}</td>
                 <td>{{product.shop_name}}</td>
                 <td>{{product.city}}</td>
                 <td>{{product.aadhar ? product.aadhar : '-'}}</td>
                 <td>{{product.pan ? product.pan : '-'}}</td>
-                <td style="text-align: center; cursor: pointer;"><i class="pi pi-download"></i>
+                <td style="text-align: center; cursor: pointer;" (click)="getInvoice(product)"><i class="pi pi-download"></i>
                 </td>
             </tr>
         </ng-template>

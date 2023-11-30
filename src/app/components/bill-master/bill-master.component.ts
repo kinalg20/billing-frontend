@@ -104,7 +104,7 @@ export class BillMasterComponent implements OnInit {
       let shop: any = this.itemMaster.controls['shop_name'].value;
 
       let object1 = {
-        name: typeof name == 'string' ? name : name['bill_no'],
+        name: typeof name == 'string' ? name : name['name'],
         father_name: this.itemMaster.value['father_name'],
         bill_no: this.itemMaster.value['bill_no'],
         mobile: this.itemMaster.value['mobile'],

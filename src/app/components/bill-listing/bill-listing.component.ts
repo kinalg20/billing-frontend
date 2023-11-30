@@ -57,4 +57,16 @@ export class BillListingComponent implements OnInit {
     this.table.filterGlobal(inputValue, 'contains')
   }
 
+  download_file : string = '';
+  getInvoice(product:any){
+    this.apiService.getInvoice(product.id)
+    .then((res:any)=>{
+      console.log(res);
+      this.download_file = res.invoice
+    })
+    .catch((err:any)=>{
+      this.download_file = ''; 
+    })
+  }
+
 }

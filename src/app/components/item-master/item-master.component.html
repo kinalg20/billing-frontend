@@ -216,8 +216,8 @@
                 <tr>
                     <td>{{ri + 1}}</td>
                     <td>{{product.name}}</td>
-                    <td>{{product.stock}}</td>
-                    <td>{{product.weight ? product.weight : 0}}</td>
+                    <td>{{product.stock | number}}</td>
+                    <td>{{product.weight ? (product.weight | number) : 0}}</td>
                     <td>{{product.melting ? product.melting : 0}}</td>
                     <td>{{product.wastage ? (product.wastage  | number) : 0}}</td>
                     <td>{{product.small_pack_weight ? product.small_pack_weight : 0}}</td>
