@@ -174,13 +174,16 @@ export class PurchaseMasterComponent implements OnInit {
 
         .catch((error) => {
           this.utility.loader(false);
-          this.showToast('error', error.errors.msg);
+          this.showToast('error', error.error.errors.msg);
         })
     }
     else {
       this.showToast('error', 'please fill required fields')
     }
   }
+
+
+  
 
 
   getAmount(string: any) {

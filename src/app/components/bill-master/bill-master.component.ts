@@ -86,15 +86,15 @@ export class BillMasterComponent implements OnInit {
       this.getProductArray().value.forEach((res: any) => {
         if (res.product_id) {
           let object = Object.assign({}, res);
-          let productId = typeof res.product_id == 'string' ? res.product_id : res.product_id['id']
+          // let productId = typeof res.product_id == 'string' ? res.product_id : res.product_id['id']
 
-          if (!Number(productId)) {
-            object['product_name'] = productId;
-            delete object['product_id'];
-          }
-          else{
-            object['product_id'] = productId
-          }
+          // if (!Number(productId)) {
+          //   object['product_name'] = productId;
+          //   delete object['product_id'];
+          // }
+          // else{
+          //   object['product_id'] = productId
+          // }
           products.push(object);
           object.gold_rate = this.itemMaster.value.gold_rate
         }
@@ -124,9 +124,9 @@ export class BillMasterComponent implements OnInit {
           this.itemMaster.reset();
           this.navigate.navigateByUrl('/bill-listing');
         })
-        .catch((err) => {
+        .catch((err:any) => {
           this.utility.loader(false);
-          this.showToast('error', err.errors.msg);
+          this.showToast('error', err.error.errors.msg);
         })
     } else {
       this.showToast('error', 'please fill required fields')
@@ -304,7 +304,7 @@ export class BillMasterComponent implements OnInit {
         let productId: any = this.getProductArray().value[index].product_id;
         let object = {
           bill_no: typeof name == 'string' ? name : name['shop_name'],
-          product_id: productId == 'string' ? productId : productId['id']
+          product_id: productId
         }
 
         debugger;

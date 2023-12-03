@@ -127,7 +127,9 @@
                             <tr [formGroupName]="index">
                                 <td style="text-align: center;">{{index+1}}</td>
                                 <td style="min-width: 100px;">
-                                    <p-autoComplete formControlName="product_id" [suggestions]="product_listing"
+                                    <p-dropdown appendTo="body" (onChange)="setFieldValues('product_id' , index)" formControlName="product_id" [options]="product_listing" appendTo="body"
+                                        optionLabel="name" placeholder="product" optionValue="id" [filter]="true" [filterBy]="'name'"></p-dropdown>
+                                    <!-- <p-autoComplete formControlName="product_id" [suggestions]="product_listing"
                                         placeholder="Product" appendTo="body"
                                         (onSelect)="setFieldValues('product_id' , index)"
                                         (input)="setFieldValues('product_id' , index)"
@@ -137,7 +139,7 @@
                                                 <div>{{country.name}}</div>
                                             </div>
                                         </ng-template>
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </td>
                                 <td>
                                     <input type="text" pKeyFilter="num" class="form-control"

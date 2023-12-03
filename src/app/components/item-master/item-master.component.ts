@@ -59,26 +59,32 @@ export class ItemMasterComponent implements OnInit {
 
   itemMaster = this.fb.group({
     name: new FormControl('', [Validators.required]),
-    melting: new FormControl(''),
-    wastage: new FormControl(''),
-    less_weight: new FormControl(''),
     weight: new FormControl(''),
+    melting: new FormControl(0),
+    wastage: new FormControl(0),
+    labour: new FormControl(''),
+    purchasing_price: new FormControl('0'),
+    fine: new FormControl(0),
+    less_weight: new FormControl(''),
     small_pack_quantity: new FormControl(''),
     small_pack_weight: new FormControl(''),
     box_quantity: new FormControl(''),
     box_weight: new FormControl(''),
     big_pack_quantity: new FormControl(''),
     big_pack_weight: new FormControl(''),
-    labour: new FormControl(''),
-    labour_by: new FormControl('weight'),
-    gold_rate: new FormControl(''),
-    piece_quantity: new FormControl(''),
-    net_weight: new FormControl(0),
-    rate: new FormControl(0),
-    fine: new FormControl(0),
+    gross_weight: new FormControl(0),
+    total_labour: new FormControl(0),
     sell_labour: new FormControl(0),
     sell_rate: new FormControl(0),
-    total_labour: new FormControl(0)
+    sell_fine: new FormControl(0),
+    total_sell_labour: new FormControl(0),
+    profit_fine: new FormControl(0),
+    stock: new FormControl('')
+
+    // labour_by: new FormControl('weight'),
+    // gold_rate: new FormControl(''),
+    // piece_quantity: new FormControl(''),
+    // rate: new FormControl(0),
   })
 
   itemMasterSubmit(itemMaster: FormGroupDirective) {
@@ -91,6 +97,7 @@ export class ItemMasterComponent implements OnInit {
             this.itemMaster.reset();
             this.showToast('success', res.message)
             itemMaster.resetForm();
+            this.itemMasterTable.controls['labour_by'].setValue('weight')
             this.getAllProduct();
           })
 
@@ -119,11 +126,17 @@ export class ItemMasterComponent implements OnInit {
             this.getAllProduct();
           })
           .catch((err) => {
-            this.showToast(err.message, 'error');
+            this.showToast(err.error.errors.message, 'error');
             this.utility.loader(false);
           })
+        }
+        
       }
-    }
+      this.itemMaster.controls['purchasing_price'].setValue('0')
+      this.itemMaster.controls['fine'].setValue(0)
+      this.itemMaster.controls['gross_weight'].setValue(0)
+      this.itemMaster.controls['total_labour'].setValue(0)
+      this.itemMaster.controls['profit_fine'].setValue(0)
   }
 
   getTotalStock: any = 0;
@@ -160,51 +173,7 @@ export class ItemMasterComponent implements OnInit {
     this.submitButton = 'Update';
   }
 
-  net_weight: Number = 0;
-  rate: Number = 0;
-  fine: Number = 0;
-  total_labour: Number = 0;
-  getNetWeight(string: any) {
-    let form_values = this.itemMaster.value;
-    let product_weight = 0;
-    let netWeight = 0;
-    if (string == 'net weight') {
-      product_weight = form_values.weight ? Number(form_values.weight) : 0
-      netWeight = (product_weight) - (((Number(form_values?.box_quantity) ?? 0) * (Number(form_values?.box_weight) ?? 0)) + ((Number(form_values?.small_pack_quantity) ?? 0) * (Number(form_values?.small_pack_weight) ?? 0)) + ((Number(form_values?.big_pack_quantity) ?? 0) * (Number(form_values?.big_pack_weight) ?? 0)))
-      this.itemMaster.controls['net_weight'].setValue(netWeight == 0 ? 0 : netWeight)
-      return netWeight == 0 ? 'Net Weight' : netWeight;
-    }
-
-    else if (string == 'fine') {
-      let fine = (Number(form_values.net_weight) * Number(form_values.rate)) / 100;
-      this.itemMaster.controls['fine'].setValue(fine ?? 0)
-      return fine == 0 ? 'Fine' : fine;
-    }
-
-    else if (string == 'total_labour') {
-      if (form_values.labour_by == 'weight') {
-        this.itemMaster.controls['total_labour'].setValue(Number(form_values.weight) * Number(form_values.labour));
-      }
-
-      else {
-        this.itemMaster.controls['total_labour'].setValue(Number(form_values.piece_quantity) * Number(form_values.labour));
-      }
-
-      return this.itemMaster.controls['total_labour'].value == 0 ? 'Total Labour' : this.itemMaster.controls['total_labour'].value;
-    }
-
-    else {
-      let value = Number(form_values.melting) + Number(form_values.wastage);
-      this.itemMaster.controls['rate'].setValue(value == 0 ? 0 : value);
-      return value == 0 ? 'Rate' : value;
-    }
-  }
-
   totalRows: any = [];
-
-  getAmount() {
-
-  }
 
   showToast(type: any, details: any) {
     this.messageService.add({ severity: type, summary: this.utility.capitalizeFirstLetter(type), detail: details });
@@ -219,5 +188,51 @@ export class ItemMasterComponent implements OnInit {
   filterTable(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value;
     this.table.filterGlobal(inputValue, 'contains')
+  }
+
+  calculateValues(string?: any) {
+    debugger;
+    // let item_data = this.itemMasterTable.controls;
+    if (string == 'purchasing_price' && this.itemMaster.controls['melting'].value && this.itemMaster.controls['wastage'].value) {
+      let price = Number((this.itemMaster.controls['melting'].value ? this.itemMaster.controls['melting'].value : 0)) + Number((this.itemMaster.controls['wastage'].value ? this.itemMaster.controls['wastage'].value : 0));
+      this.itemMaster.controls['purchasing_price'].setValue(String(price));
+    }
+
+    if (this.itemMaster.controls['weight'].value) {
+      if (this.itemMaster.controls['purchasing_price'].value) {
+        let price = ((Number((this.itemMaster.controls['purchasing_price'].value ? this.itemMaster.controls['purchasing_price'].value : 0)) * Number((this.itemMaster.controls['weight'].value ? this.itemMaster.controls['weight'].value : 0))) / 100);
+        this.itemMaster.controls['fine'].setValue(price);
+      }
+      let price = (Number((this.itemMaster.controls['small_pack_quantity'].value ? this.itemMaster.controls['small_pack_quantity'].value : 0)) * Number((this.itemMaster.controls['small_pack_weight'].value ? this.itemMaster.controls['small_pack_weight'].value : 0)) +
+
+        (Number((this.itemMaster.controls['big_pack_quantity'].value ? this.itemMaster.controls['big_pack_quantity'].value : 0)) * Number((this.itemMaster.controls['big_pack_weight'].value ? this.itemMaster.controls['big_pack_weight'].value : 0))) +
+
+        (Number((this.itemMaster.controls['box_quantity'].value ? this.itemMaster.controls['box_quantity'].value : 0)) * Number((this.itemMaster.controls['box_weight'].value ? this.itemMaster.controls['box_weight'].value : 0)))
+      )
+
+        + Number(this.itemMaster.controls['weight'].value)
+
+      this.itemMaster.controls['gross_weight'].setValue(price);
+    }
+
+    if (this.itemMaster.controls['gross_weight'].value && this.itemMaster.controls['labour'].value) {
+      let price: any = (Number(this.itemMaster.controls['gross_weight'].value) * (Number(this.itemMaster.controls['labour'].value)))
+      this.itemMaster.controls['total_labour'].setValue(price);
+    }
+
+    if (this.itemMaster.controls['sell_rate'].value) {
+      let price: any = (Number(this.itemMaster.controls['sell_rate'].value) * (Number(this.itemMaster.controls['weight'].value))) / 100
+      this.itemMaster.controls['sell_fine'].setValue(price);
+    }
+
+    if (this.itemMaster.controls['sell_labour'].value && this.itemMaster.controls['gross_weight'].value) {
+      let price: any = (Number(this.itemMaster.controls['sell_labour'].value) * (Number(this.itemMaster.controls['gross_weight'].value)))
+      this.itemMaster.controls['total_sell_labour'].setValue(price);
+    }
+
+    if (this.itemMaster.controls['sell_fine'].value && this.itemMaster.controls['fine'].value) {
+      let price = this.itemMaster.controls['sell_fine'].value - this.itemMaster.controls['fine'].value;
+      this.itemMaster.controls['profit_fine'].setValue(price);
+    }
   }
 }

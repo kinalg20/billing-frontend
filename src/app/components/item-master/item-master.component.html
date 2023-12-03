@@ -24,22 +24,12 @@
                     <div class="invalid-feedback"> Product is Required</div>
                 </div>
                     <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Gross Weight</label>
+                        <label for="">Net Weight</label>
                         <input type="number" min="0" class="form-control" formControlName="weight"
-                            placeholder="Gross Weight" [class.is-invalid]="(formRef.submitted &&
+                            placeholder="Weight" [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('weight')?.invalid) ||
                             (itemMaster.get('weight')?.touched &&
-                            itemMaster.get('weight')?.invalid)">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Sell Labour</label>
-                        <input type="number" min="0" class="form-control" formControlName="sell_labour"
-                            placeholder="Gross Weight">
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Sell Rate</label>
-                        <input type="number" min="0" class="form-control" formControlName="sell_rate"
-                            placeholder="Gross Weight">
+                            itemMaster.get('weight')?.invalid)" (blur)="calculateValues('fine')">
                     </div>
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Melting</label>
@@ -47,7 +37,7 @@
                             [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('melting')?.invalid) ||
                             (itemMaster.get('melting')?.touched &&
-                            itemMaster.get('melting')?.invalid)" >
+                            itemMaster.get('melting')?.invalid)" pKeyFilter="int" (blur)="calculateValues('purchasing_price')">
                     </div>
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Wastage</label>
@@ -55,9 +45,36 @@
                             [class.is-invalid]="(formRef.submitted &&
                             itemMaster.get('wastage')?.invalid) ||
                             (itemMaster.get('wastage')?.touched &&
-                            itemMaster.get('wastage')?.invalid)" >
+                            itemMaster.get('wastage')?.invalid)" pKeyFilter="int" (blur)="calculateValues('purchasing_price')">
                     </div>
-    
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Stock</label>
+                        <input type="text" class="form-control" formControlName="stock" placeholder="Stock"
+                            [class.is-invalid]="(formRef.submitted &&
+                            itemMaster.get('stock')?.invalid) ||
+                            (itemMaster.get('stock')?.touched &&
+                            itemMaster.get('stock')?.invalid)" pKeyFilter="int">
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Labour</label>
+                        <input type="number" min="0" class="form-control" formControlName="labour" placeholder="Labour"
+                            [class.is-invalid]="(formRef.submitted &&
+                            itemMaster.get('labour')?.invalid) ||
+                            (itemMaster.get('labour')?.touched &&
+                            itemMaster.get('labour')?.invalid)" (blur)="calculateValues()">
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Purchasing Price</label>
+                        <span class="form-control">{{(itemMaster.get('purchasing_price')?.value)}}</span>
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Fine</label>
+                        <span class="form-control" (blur)="calculateValues()">{{itemMaster.get('fine')?.value}}</span>
+                    </div>
+
                     <div class="col-lg-2 col-md-12 form-group d-flex align-items-center">
                         <input type="checkbox" value="Less Weight" formControlName="less_weight"><span class="mx-2">Less
                             Weight</span>
@@ -66,45 +83,74 @@
                     <ng-container *ngIf="itemMaster.controls['less_weight'].value">
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Small Pack Qty</label>
-                            <input type="number" min="0" class="form-control" formControlName="small_pack_qty"
-                                placeholder="Small Pack Qty">
+                            <input type="number" min="0" class="form-control" formControlName="small_pack_quantity"
+                                placeholder="Small Pack Qty" (blur)="calculateValues()">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Small Pack Wt</label>
                             <input type="number" min="0" class="form-control" formControlName="small_pack_weight"
-                                placeholder="Small Pack Wt">
+                                placeholder="Small Pack Wt" (blur)="calculateValues()">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Big Pack Qty</label>
-                            <input type="number" min="0" class="form-control" formControlName="big_pack_qty"
-                                placeholder="Big Pack Qty">
+                            <input type="number" min="0" class="form-control" formControlName="big_pack_quantity"
+                                placeholder="Big Pack Qty" (blur)="calculateValues()">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Big Pack Wt</label>
                             <input type="number" min="0" class="form-control" formControlName="big_pack_weight"
-                                placeholder="Big Pack Wt">
+                                placeholder="Big Pack Wt" (blur)="calculateValues()">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Box Wt</label>
                             <input type="number" min="0" class="form-control" formControlName="box_weight"
-                                placeholder="Box Wt">
+                                placeholder="Box Wt" (blur)="calculateValues()">
                         </div>
                         <div class="col-lg-2 col-md-12 form-group">
                             <label for="">Box Qty</label>
-                            <input type="number" min="0" class="form-control" formControlName="box_qty"
-                                placeholder="Box Qty">
+                            <input type="number" min="0" class="form-control" formControlName="box_quantity"
+                                placeholder="Box Qty" (blur)="calculateValues()">
                         </div>
                     </ng-container>
-                    
+
                     <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Labour</label>
-                        <input type="number" min="0" class="form-control" formControlName="labour" placeholder="Labour"
-                            [class.is-invalid]="(formRef.submitted &&
-                            itemMaster.get('labour')?.invalid) ||
-                            (itemMaster.get('labour')?.touched &&
-                            itemMaster.get('labour')?.invalid)" >
+                        <label for="">Gross Weight</label>
+                        <span class="form-control">{{itemMaster.controls['gross_weight'].value}}</span>
                     </div>
-                    <div class="col-lg-2 col-md-12 form-group" *ngIf="itemMaster.get('labour_by')?.value == 'piece'">
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Total Labour</label>
+                        <span class="form-control">{{itemMaster.get('total_labour')?.value}}</span>
+                    </div>
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Sell Rate</label>
+                        <input type="number" min="0" class="form-control" formControlName="sell_rate"
+                            placeholder="Sell Rate" (blur)="calculateValues()">
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Sell Fine</label>
+                        <input type="number" min="0" class="form-control" formControlName="sell_fine"
+                        placeholder="Sell Fine">
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Sell Labour</label>
+                        <input type="number" min="0" class="form-control" formControlName="sell_labour"
+                            placeholder="Sell Labour" (blur)="calculateValues()">
+                    </div>
+    
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Total Sell Labour</label>
+                        <span class="form-control">{{itemMaster.get('total_sell_labour')?.value}}</span>
+                    </div>
+
+                    <div class="col-lg-2 col-md-12 form-group">
+                        <label for="">Profit Fine</label>
+                        <span class="form-control">{{itemMaster.get('profit_fine')?.value | number}}</span>
+                    </div>
+    
+                    <!-- <div class="col-lg-2 col-md-12 form-group" *ngIf="itemMaster.get('labour_by')?.value == 'piece'">
                         <label for="">Piece Quantity</label>
                         <input type="number" min="0" class="form-control" formControlName="piece_quantity"
                             placeholder="Piece Quantity" [class.is-invalid]="(formRef.submitted &&
@@ -143,12 +189,8 @@
                     <div class="col-lg-2 col-md-12 form-group">
                         <label for="">Fine</label>
                         <span class="form-control">{{getNetWeight('fine')}}</span>
-                    </div>
-                    <div class="col-lg-2 col-md-12 form-group">
-                        <label for="">Total Labour</label>
-                        <span class="form-control">{{getNetWeight('total_labour')}}</span>
-                    </div>
-                    <div class="col-lg-8 col-md-12 form-group" style="display: flex; align-items: center; justify-content: right;">
+                    </div> -->
+                    <div class="col-lg-2 col-md-12 form-group" style="display: flex; align-items: end; justify-content: left;">
                         <div class="form-group">
                             <button type="submit" class="submit_btn m-0">{{submitButton}}</button>
                         </div>
@@ -173,7 +215,7 @@
 
 
 
-    <div class="card" *ngIf="productList.length > 0">
+    <div class="card stock-card" *ngIf="productList.length > 0">
         <p-table #dt1 [value]="productList" dataKey="id"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -190,25 +232,25 @@
                 <tr>
                     <th>S.No.</th>
                     <th>Product Name</th>
-                    <th>Stock</th>
-                    <th>Gross Wt</th>
+                    <th>Net Wt</th>
                     <th>Melting</th>
                     <th>Wastage</th>
+                    <th>Stock</th>
+                    <th>Labour</th>
+                    <th>Purchasing Price</th>
+                    <th>Fine</th>
                     <th>Small Pac. Wt</th>
                     <th>Small Pac. Qty</th>
                     <th>Big Pac. Wt</th>
                     <th>Big Pac. Qty</th>
                     <th>Box Wt</th>
                     <th>Box Qty</th>
-                    <th>Labour</th>
-                    <th>Labour By</th>
                     <th>Total Labour</th>
-                    <th>Piece Qty</th>
-                    <th>Gold Rate</th>
-                    <th>Rate</th>
-                    <th>Fine</th>
                     <th>Sell Rate</th>
+                    <th>Sell Fine</th>
                     <th>Sell Labour</th>
+                    <th>Total Sell Labour</th>
+                    <th>Profit Fine</th>
                     <th>Action</th>
                 </tr>
             </ng-template>
@@ -216,27 +258,27 @@
                 <tr>
                     <td>{{ri + 1}}</td>
                     <td>{{product.name}}</td>
-                    <td>{{product.stock | number}}</td>
                     <td>{{product.weight ? (product.weight | number) : 0}}</td>
                     <td>{{product.melting ? product.melting : 0}}</td>
                     <td>{{product.wastage ? (product.wastage  | number) : 0}}</td>
+                    <td>{{product.stock | number}}</td>
+                    <td>{{product.labour | number}}</td>
+                    <td>{{product.purchasing_price ? (product.purchasing_price| number) : 0}}</td>
+                    <td>{{product.fine | number}}</td>
                     <td>{{product.small_pack_weight ? product.small_pack_weight : 0}}</td>
                     <td>{{product.small_pack_quantity ? product.small_pack_quantity : 0}}</td>
                     <td>{{product.big_pack_weight ? product.big_pack_weight : 0}}</td>
                     <td>{{product.big_pack_quantity ? product.big_pack_quantity : 0}}</td>
                     <td>{{product.box_weight ? product.box_weight : 0}}</td>
                     <td>{{product.box_quantity ? product.box_quantity : 0}}</td>
-                    <td>{{product.labour | number}}</td>
-                    <td>{{product.labour_by}}</td>
                     <td>{{product.total_labour | number}}</td>
-                    <td>{{product.piece_quantity ? product.piece_quantity : 0}}</td>
-                    <td>{{product.gold_rate}}</td>
-                    <td>{{product.purchasing_price ? (product.purchasing_price| number) : 0}}</td>
-                    <td>{{product.fine | number}}</td>
                     <td>{{product.sell_rate}}</td>
+                    <td>{{product.sell_fine}}</td>
                     <td>{{product.sell_labour}}</td> 
+                    <td>{{product.total_sell_labour}}</td> 
+                    <td>{{product.profit_fine}}</td> 
                     <td style="cursor: pointer; display: flex; justify-content: center;">
-                        <i (click)="editItem(ri)" class="mb-3 pi pi-pencil text-2xl text-color-secondary"></i>
+                        <i (click)="editItem(ri)" class="pi pi-pencil text-2xl text-color-secondary"></i>
                     </td>   
                 </tr>
             </ng-template>

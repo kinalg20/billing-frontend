@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { AppUtility } from 'src/app/apputitlity';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -12,7 +13,7 @@ import { ApiService } from 'src/app/services/api.service';
 export class ReportsComponent implements OnInit {
   customerDropdown: any[] = [];
 
-  constructor(private Fb: FormBuilder, private apiService: ApiService, private loader: AppUtility) { }
+  constructor(private Fb: FormBuilder, private apiService: ApiService, private loader: AppUtility , private messageService : MessageService , private utility : AppUtility) { }
 
   date: any;
   ngOnInit(): void {
@@ -65,7 +66,11 @@ export class ReportsComponent implements OnInit {
     })
     .catch((err:any)=>{
       this.loader.loader(false);
+      this.showToast('error', err.error.errors.msg);
     })
   }
 
+  showToast(type: any, details: any) {
+    this.messageService.add({ severity: type, summary: this.utility.capitalizeFirstLetter(type), detail: details });
+  }
 }

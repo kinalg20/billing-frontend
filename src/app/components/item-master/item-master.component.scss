@@ -120,6 +120,12 @@
 
     .p-datatable .p-datatable-thead > tr > th , .p-datatable .p-datatable-tbody > tr > td{
         font-size: 15px;
-        padding: 0.3rem 0.5rem;
+        padding: 0.2rem 0.5rem;
+        height: 43.02px;
+        align-items: center;
+    }
+
+    .stock-card i.pi.pi-pencil.text-2xl.text-color-secondary{
+        height: fit-content;
     }
 } 
