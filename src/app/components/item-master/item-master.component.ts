@@ -59,13 +59,13 @@ export class ItemMasterComponent implements OnInit {
 
   itemMaster = this.fb.group({
     name: new FormControl('', [Validators.required]),
-    weight: new FormControl(''),
+    weight: new FormControl(0),
     melting: new FormControl(0),
     wastage: new FormControl(0),
-    labour: new FormControl(''),
+    labour: new FormControl(0),
     purchasing_price: new FormControl('0'),
     fine: new FormControl(0),
-    less_weight: new FormControl(''),
+    less_weight: new FormControl(0),
     small_pack_quantity: new FormControl(''),
     small_pack_weight: new FormControl(''),
     box_quantity: new FormControl(''),
@@ -79,7 +79,7 @@ export class ItemMasterComponent implements OnInit {
     sell_fine: new FormControl(0),
     total_sell_labour: new FormControl(0),
     profit_fine: new FormControl(0),
-    stock: new FormControl('')
+    stock: new FormControl(0)
 
     // labour_by: new FormControl('weight'),
     // gold_rate: new FormControl(''),
@@ -191,7 +191,6 @@ export class ItemMasterComponent implements OnInit {
   }
 
   calculateValues(string?: any) {
-    debugger;
     // let item_data = this.itemMasterTable.controls;
     if (string == 'purchasing_price' && this.itemMaster.controls['melting'].value && this.itemMaster.controls['wastage'].value) {
       let price = Number((this.itemMaster.controls['melting'].value ? this.itemMaster.controls['melting'].value : 0)) + Number((this.itemMaster.controls['wastage'].value ? this.itemMaster.controls['wastage'].value : 0));

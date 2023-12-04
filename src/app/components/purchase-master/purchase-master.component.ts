@@ -57,13 +57,13 @@ export class PurchaseMasterComponent implements OnInit {
           wastage: new FormControl(''),
           less_weight: new FormControl(''),
           gross_weight: new FormControl(''),
-          small_pack_quantity: new FormControl(''),
-          small_pack_weight: new FormControl(''),
-          box_quantity: new FormControl(''),
-          box_weight: new FormControl(''),
-          big_pack_quantity: new FormControl(''),
-          big_pack_weight: new FormControl(''),
-          labour: new FormControl(''),
+          small_pack_quantity: new FormControl(0),
+          small_pack_weight: new FormControl(0),
+          box_quantity: new FormControl(0),
+          box_weight: new FormControl(0),
+          big_pack_quantity: new FormControl(0),
+          big_pack_weight: new FormControl(0),
+          labour: new FormControl(0),
           labour_by: new FormControl('weight'),
           piece_quantity: new FormControl('0'),
           weight: new FormControl(0),
@@ -97,7 +97,7 @@ export class PurchaseMasterComponent implements OnInit {
   product_list: any = [];
   product_controls: any = [];
   getNetWeight(string: any, index: any) {
-    debugger;
+
     this.product_list = this.purchasingForm.controls['productList'].value ?? [];
     this.product_controls = this.getProductArray();
     let product_weight = 0;
@@ -142,7 +142,7 @@ export class PurchaseMasterComponent implements OnInit {
       let shopName : any = this.purchasingForm.value.shop_name
       this.getProductArray().value.forEach((res: any) => {
         if (res.product_id) {
-          debugger;
+      
           let object = Object.assign({} , res);
           let productId = typeof this.getProductArray().value[0].product_id == 'string' ? this.getProductArray().value[0].product_id : this.getProductArray().value[0].product_id['id']
           if (!Number(productId)) {

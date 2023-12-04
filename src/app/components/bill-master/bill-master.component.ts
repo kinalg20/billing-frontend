@@ -156,7 +156,6 @@ export class BillMasterComponent implements OnInit {
     this.product_controls = this.getProductArray();
     let product_weight = 0;
     let netWeight = 0;
-    debugger;
     if (string == 'net weight' || string == '') {
       product_weight = this.product_list[index].gross_weight ? Number(this.product_list[index].gross_weight) : 0
       netWeight = (product_weight) - (((Number(this.product_list[index]?.box_quantity) ?? 0) * (Number(this.product_list[index]?.box_weight) ?? 0)) + ((Number(this.product_list[index]?.small_pack_quantity) ?? 0) * (Number(this.product_list[index]?.small_pack_weight) ?? 0)) + ((Number(this.product_list[index]?.big_pack_quantity) ?? 0) * (Number(this.product_list[index]?.big_pack_weight) ?? 0)))
@@ -190,7 +189,7 @@ export class BillMasterComponent implements OnInit {
   shopDataList: any = [];
   async showCustomerDropdown() {
     await this.apiService.getCustomer().then((res: any) => {
-      debugger;
+
       this.customerDropdown = res['data'];
     }).catch((err: any) => {
       this.customerDropdown = [];
@@ -299,7 +298,7 @@ export class BillMasterComponent implements OnInit {
   setFieldValues(string: any, index?: any) {
     if (string != 'shop') {
       if (this.itemMaster.controls['shop_name'].value && this.getProductArray().value[index].product_id) {
-        debugger;
+  
         let name: any = this.itemMaster.value.shop_name;
         let productId: any = this.getProductArray().value[index].product_id;
         let object = {
@@ -307,7 +306,7 @@ export class BillMasterComponent implements OnInit {
           product_id: productId
         }
 
-        debugger;
+  
         if(Number(object.product_id)){
           this.getCustomerByShopProduct(object, index);
         }
@@ -322,7 +321,7 @@ export class BillMasterComponent implements OnInit {
       if (this.itemMaster.controls['shop_name'].value) {
         this.product_controls = this.getProductArray();
         this.getProductArray().value.forEach((res: any , index:any) => {
-          debugger;
+    
           if (res.product_id) {
             let name: any = this.itemMaster.value.shop_name
             let productId: any = this.getProductArray().value[index].product_id;
@@ -426,7 +425,7 @@ export class BillMasterComponent implements OnInit {
     }
 
     else {
-      debugger;
+
       for (let i = 0; i < this.customerDropdown.length; i++) {
         if (this.customerDropdown[i]['name'].toLowerCase().indexOf(query.toLowerCase()) == 0) {
           filtered.push(this.customerDropdown[i]);
@@ -437,7 +436,6 @@ export class BillMasterComponent implements OnInit {
   }
 
   async getLastBill() {
-    debugger;
     let bill_no = '';
     await this.apiService.getLastBill()
       .then((res: any) => {

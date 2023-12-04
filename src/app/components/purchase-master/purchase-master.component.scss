@@ -175,6 +175,14 @@
         height: 20px;
     }
 
+    .purchasing-table th {
+        font-weight: bold;
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
     .labour-select {
         width: 100px;
     }
