@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
+import { AppUtility } from 'src/app/apputitlity';
 import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-bill-listing',
@@ -15,7 +17,7 @@ export class BillListingComponent implements OnInit {
       subTitle: "Dashboard",
     },
   ];
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private utility: AppUtility) { }
 
   totalRows: any = [];
   productList: any = [];
@@ -28,12 +30,12 @@ export class BillListingComponent implements OnInit {
   getAllBills() {
     this.totalRows = [];
     this.apiService.getBills()
-    .then((res: any) => {
-      this.totalRows = res['data'];
-    })
-    .catch((error:any)=>{
-      this.totalRows = [];
-    })
+      .then((res: any) => {
+        this.totalRows = res['data'];
+      })
+      .catch((error: any) => {
+        this.totalRows = [];
+      })
   }
 
   getProductList() {
@@ -47,7 +49,7 @@ export class BillListingComponent implements OnInit {
   }
 
   filterval = ''
-  reset(dt1:any) {
+  reset(dt1: any) {
     dt1.reset();
     this.filterval = '';
   }
@@ -57,16 +59,12 @@ export class BillListingComponent implements OnInit {
     this.table.filterGlobal(inputValue, 'contains')
   }
 
-  download_file : string = '';
-  getInvoice(product:any){
+  download_file: string = '';
+  getInvoice(product: any) {
     this.apiService.getInvoice(product.id)
-    .then((res:any)=>{
-      console.log(res);
-      this.download_file = res.invoice
-    })
-    .catch((err:any)=>{
-      this.download_file = ''; 
-    })
+      .then((res: any) => {
+        window.open(environment.image_url + res.invoice, '_blank');
+      })
   }
 
 }

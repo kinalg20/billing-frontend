@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backend_api : 'http://localhost:5001/api/v1/'
+  backend_api : 'http://localhost:5001/api/v1/',
+  image_url : 'http://localhost:5001/invoices/'
 };
 
 /*
