@@ -63,7 +63,7 @@ export class BillListingComponent implements OnInit {
   getInvoice(product: any) {
     this.apiService.getInvoice(product.id)
       .then((res: any) => {
-        window.open(environment.image_url + res.invoice_file, '_blank');
+        window.open(environment.image_url + res.data.invoice, '_blank');
       })
   }
 

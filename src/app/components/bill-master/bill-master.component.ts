@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { AppUtility } from 'src/app/apputitlity';
 import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-bill-master',
@@ -122,6 +123,7 @@ export class BillMasterComponent implements OnInit {
           this.utility.loader(false);
           this.showToast('success', res.message);
           this.itemMaster.reset();
+          window.open(environment.image_url + res.invoice_file, '_blank');
           this.navigate.navigateByUrl('/bill-listing');
         })
         .catch((err:any) => {
